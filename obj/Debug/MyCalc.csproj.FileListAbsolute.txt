@@ -1,0 +1,27 @@
+D:\Мой резерв\projects\Калькулятор 2.1(C#)\MyCalc\bin\Debug\MyCalc.exe.config
+D:\Мой резерв\projects\Калькулятор 2.1(C#)\MyCalc\bin\Debug\MyCalc.exe
+D:\Мой резерв\projects\Калькулятор 2.1(C#)\MyCalc\bin\Debug\MyCalc.pdb
+D:\Мой резерв\projects\Калькулятор 2.1(C#)\MyCalc\obj\Debug\MyCalc.csprojResolveAssemblyReference.cache
+D:\Мой резерв\projects\Калькулятор 2.1(C#)\MyCalc\obj\Debug\MyCalc.Form1.resources
+D:\Мой резерв\projects\Калькулятор 2.1(C#)\MyCalc\obj\Debug\MyCalc.Properties.Resources.resources
+D:\Мой резерв\projects\Калькулятор 2.1(C#)\MyCalc\obj\Debug\MyCalc.csproj.GenerateResource.Cache
+D:\Мой резерв\projects\Калькулятор 2.1(C#)\MyCalc\obj\Debug\MyCalc.exe
+D:\Мой резерв\projects\Калькулятор 2.1(C#)\MyCalc\obj\Debug\MyCalc.pdb
+E:\Мой резерв\projects\Калькулятор 2.1(C#)\MyCalc\bin\Debug\MyCalc.exe.config
+E:\Мой резерв\projects\Калькулятор 2.1(C#)\MyCalc\obj\Debug\MyCalc.exe
+E:\Мой резерв\projects\Калькулятор 2.1(C#)\MyCalc\obj\Debug\MyCalc.pdb
+E:\Мой резерв\projects\Калькулятор 2.1(C#)\MyCalc\bin\Debug\MyCalc.exe
+E:\Мой резерв\projects\Калькулятор 2.1(C#)\MyCalc\bin\Debug\MyCalc.pdb
+E:\Мой резерв\projects\Калькулятор 2.1(C#)\MyCalc\obj\Debug\MyCalc.csprojResolveAssemblyReference.cache
+E:\Мой резерв\projects\Калькулятор 2.1(C#)\MyCalc\obj\Debug\MyCalc.Form1.resources
+E:\Мой резерв\projects\Калькулятор 2.1(C#)\MyCalc\obj\Debug\MyCalc.Properties.Resources.resources
+E:\Мой резерв\projects\Калькулятор 2.1(C#)\MyCalc\obj\Debug\MyCalc.csproj.GenerateResource.Cache
+C:\projects\Калькулятор 2.1(C#)\MyCalc\bin\Debug\MyCalc.exe.config
+C:\projects\Калькулятор 2.1(C#)\MyCalc\bin\Debug\MyCalc.exe
+C:\projects\Калькулятор 2.1(C#)\MyCalc\bin\Debug\MyCalc.pdb
+C:\projects\Калькулятор 2.1(C#)\MyCalc\obj\Debug\MyCalc.csprojResolveAssemblyReference.cache
+C:\projects\Калькулятор 2.1(C#)\MyCalc\obj\Debug\MyCalc.Form1.resources
+C:\projects\Калькулятор 2.1(C#)\MyCalc\obj\Debug\MyCalc.Properties.Resources.resources
+C:\projects\Калькулятор 2.1(C#)\MyCalc\obj\Debug\MyCalc.csproj.GenerateResource.Cache
+C:\projects\Калькулятор 2.1(C#)\MyCalc\obj\Debug\MyCalc.exe
+C:\projects\Калькулятор 2.1(C#)\MyCalc\obj\Debug\MyCalc.pdb

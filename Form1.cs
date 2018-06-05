@@ -15,9 +15,10 @@ namespace MyCalc
         public Form1()
         {
             InitializeComponent();
+            roundDigits.SelectedIndex = 2;
         }
 
-        const int RoundConst = 5;
+        int RoundDigit;
 
         private string compute(string calcStr, int opNumber)
         {
@@ -26,11 +27,11 @@ namespace MyCalc
             double b = Convert.ToDouble(calcStr.Substring(opNumber + 1, calcStr.Length - opNumber - 1));
             switch (operation)
             {
-                case '^': a = Math.Round(Math.Pow(a, b), RoundConst); break;
-                case '*': a = Math.Round(a * b, RoundConst); break;
-                case '/': a = Math.Round(a / b, RoundConst); break;
-                case '+': a = Math.Round(a + b, RoundConst); break;
-                case '-': a = Math.Round(a - b, RoundConst); break;
+                case '^': a = Math.Round(Math.Pow(a, b), RoundDigit); break;
+                case '*': a = Math.Round(a * b, RoundDigit); break;
+                case '/': a = Math.Round(a / b, RoundDigit); break;
+                case '+': a = Math.Round(a + b, RoundDigit); break;
+                case '-': a = Math.Round(a - b, RoundDigit); break;
             }
             return Convert.ToString(a);
         }
@@ -83,7 +84,7 @@ namespace MyCalc
                          * case "log":
                           */
                     }
-                    string result = Convert.ToString(Math.Round(temp, RoundConst));
+                    string result = Convert.ToString(Math.Round(temp, RoundDigit));
                     str = str.Insert(startWord, result);
                 }
                 else haveOperations = false;
@@ -165,9 +166,14 @@ namespace MyCalc
         string getCalcStr()
         {
             string calcStr = textBox1.Text.ToLower();
-            calcStr = calcStr.Replace('.', ' ');
-            calcStr = calcStr.Replace(',', '.');
-            calcStr = calcStr.Replace(' ', ',');
+            if (MultyParamsFunc.Checked)
+            {
+                calcStr = calcStr.Replace('.', ' ');
+                calcStr = calcStr.Replace(',', '.');
+                calcStr = calcStr.Replace(' ', ',');
+            }
+            else
+                calcStr = calcStr.Replace('.', ',');
             int i = 0;
             int brackets = 0;
             while (i < calcStr.Length)
@@ -190,8 +196,10 @@ namespace MyCalc
         {
             try
             {
-                Memo.Clear();
+                RoundDigit = int.Parse(roundDigits.SelectedItem.ToString());
                 answerBox.Text = calculate(getCalcStr());
+                if (History.Items.Count == 0 || textBox1.Text != History.Items[History.Items.Count - 1].ToString())
+                    History.Items.Add(textBox1.Text);
             }
             catch(Exception ex)
             {
@@ -201,9 +209,13 @@ namespace MyCalc
 
         private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
         {
-            EventArgs emptyArg=new EventArgs();
             if(e.KeyChar==(char)Keys.Enter)
-                button1_Click(sender, emptyArg);
+                button1_Click(sender, new EventArgs());
+        }
+
+        private void History_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            textBox1.Text = History.SelectedItem.ToString();
         }
     }
 }

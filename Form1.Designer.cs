@@ -31,9 +31,11 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.label1 = new System.Windows.Forms.Label();
             this.answerBox = new System.Windows.Forms.TextBox();
-            this.Memo = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.MultyParamsFunc = new System.Windows.Forms.CheckBox();
+            this.roundDigits = new System.Windows.Forms.ComboBox();
+            this.History = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // label1
@@ -41,7 +43,7 @@
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.label1.Location = new System.Drawing.Point(421, 17);
+            this.label1.Location = new System.Drawing.Point(420, 36);
             this.label1.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(15, 14);
@@ -50,25 +52,16 @@
             // 
             // answerBox
             // 
-            this.answerBox.Location = new System.Drawing.Point(440, 13);
+            this.answerBox.Location = new System.Drawing.Point(439, 32);
             this.answerBox.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.answerBox.Name = "answerBox";
             this.answerBox.ReadOnly = true;
             this.answerBox.Size = new System.Drawing.Size(108, 21);
             this.answerBox.TabIndex = 8;
             // 
-            // Memo
-            // 
-            this.Memo.Location = new System.Drawing.Point(122, 42);
-            this.Memo.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
-            this.Memo.Multiline = true;
-            this.Memo.Name = "Memo";
-            this.Memo.Size = new System.Drawing.Size(225, 142);
-            this.Memo.TabIndex = 7;
-            // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(11, 42);
+            this.button1.Location = new System.Drawing.Point(10, 61);
             this.button1.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(101, 22);
@@ -79,7 +72,7 @@
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(11, 13);
+            this.textBox1.Location = new System.Drawing.Point(10, 32);
             this.textBox1.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(404, 21);
@@ -87,16 +80,55 @@
             this.textBox1.Text = "0.1+1.1";
             this.textBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox1_KeyPress);
             // 
+            // MultyParamsFunc
+            // 
+            this.MultyParamsFunc.AutoSize = true;
+            this.MultyParamsFunc.BackColor = System.Drawing.Color.Transparent;
+            this.MultyParamsFunc.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.MultyParamsFunc.Location = new System.Drawing.Point(120, 60);
+            this.MultyParamsFunc.Name = "MultyParamsFunc";
+            this.MultyParamsFunc.Size = new System.Drawing.Size(290, 18);
+            this.MultyParamsFunc.TabIndex = 10;
+            this.MultyParamsFunc.Text = "Функции с несколькими параметрами";
+            this.MultyParamsFunc.UseVisualStyleBackColor = false;
+            // 
+            // roundDigits
+            // 
+            this.roundDigits.FormattingEnabled = true;
+            this.roundDigits.Items.AddRange(new object[] {
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6"});
+            this.roundDigits.Location = new System.Drawing.Point(426, 63);
+            this.roundDigits.Name = "roundDigits";
+            this.roundDigits.Size = new System.Drawing.Size(121, 21);
+            this.roundDigits.TabIndex = 11;
+            // 
+            // History
+            // 
+            this.History.FormattingEnabled = true;
+            this.History.Location = new System.Drawing.Point(10, 4);
+            this.History.Name = "History";
+            this.History.Size = new System.Drawing.Size(537, 21);
+            this.History.TabIndex = 12;
+            this.History.SelectedIndexChanged += new System.EventHandler(this.History_SelectedIndexChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = global::MyCalc.Properties.Resources._2;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(593, 403);
+            this.ClientSize = new System.Drawing.Size(601, 437);
+            this.Controls.Add(this.History);
+            this.Controls.Add(this.roundDigits);
+            this.Controls.Add(this.MultyParamsFunc);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.answerBox);
-            this.Controls.Add(this.Memo);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.textBox1);
             this.Font = new System.Drawing.Font("Lucida Console", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -115,9 +147,11 @@
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox answerBox;
-        private System.Windows.Forms.TextBox Memo;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.CheckBox MultyParamsFunc;
+        private System.Windows.Forms.ComboBox roundDigits;
+        private System.Windows.Forms.ComboBox History;
     }
 }
 

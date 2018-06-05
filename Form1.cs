@@ -17,37 +17,22 @@ namespace MyCalc
             InitializeComponent();
         }
 
-        const int RoundConst = 3;
+        const int RoundConst = 5;
 
         private string compute(string calcStr, int opNumber)
         {
-            bool minus = false;
-            if (calcStr[opNumber + 1] == '-')
-                if ((calcStr[opNumber] == '*') || (calcStr[opNumber] == '/'))
-                {
-                    minus = true;
-                    calcStr = calcStr.Remove(opNumber + 1, 1);
-                }
-                else if (calcStr[opNumber] == '+')
-                    calcStr = calcStr.Remove(opNumber, 1);
-                else
-                {
-                    calcStr = calcStr.Remove(opNumber, 2);
-                    calcStr = calcStr.Insert(opNumber, "+");
-                }
             char operation = calcStr[opNumber];
             double a = Convert.ToDouble(calcStr.Substring(0, opNumber));
             double b = Convert.ToDouble(calcStr.Substring(opNumber + 1, calcStr.Length - opNumber - 1));
             switch (operation)
             {
+                case '^': a = Math.Round(Math.Pow(a, b), RoundConst); break;
                 case '*': a = Math.Round(a * b, RoundConst); break;
                 case '/': a = Math.Round(a / b, RoundConst); break;
                 case '+': a = Math.Round(a + b, RoundConst); break;
                 case '-': a = Math.Round(a - b, RoundConst); break;
             }
-            if (minus) return Convert.ToString(-a);
-            else return Convert.ToString(a);
-
+            return Convert.ToString(a);
         }
 
         void mathFunctions(ref string str)//str-строка с мат. операцией
@@ -80,9 +65,9 @@ namespace MyCalc
                     switch (mathOperation)
                     {
                         case "abs": temp = Math.Abs(Convert.ToDouble(strBetweenBrackets)); break;
-                        case "sin": temp = Math.Sin(Convert.ToDouble(strBetweenBrackets)); break;
-                        case "cos": temp = Math.Cos(Convert.ToDouble(strBetweenBrackets)); break;
-                        case "tan": temp = Math.Tan(Convert.ToDouble(strBetweenBrackets)); break;
+                        case "sin": temp = Math.Sin(Convert.ToDouble(strBetweenBrackets) / 57.2958); break;
+                        case "cos": temp = Math.Cos(Convert.ToDouble(strBetweenBrackets) / 57.2958); break;
+                        case "tan": temp = Math.Tan(Convert.ToDouble(strBetweenBrackets) / 57.2958); break;
                         case "int": temp = Math.Truncate(Convert.ToDouble(strBetweenBrackets)); break;
                         case "rnd": temp = Math.Round(Convert.ToDouble(strBetweenBrackets)); break;
                         case "exp": temp = Math.Exp(Convert.ToDouble(strBetweenBrackets)); break;
@@ -107,14 +92,18 @@ namespace MyCalc
 
         private string priority(string str)
         {
-            int i = 0;
-            for (int currentPriority = 1; currentPriority <= 2; currentPriority++)
+            int i;
+            for (int currentPriority = 0; currentPriority <= 2; currentPriority++)
             {
                 i = 0;
                 while (i < str.Length - 1)
                 {
                     switch (currentPriority)
                     {
+                        case 0:
+                            while ((str[i] != '^') && (i < str.Length - 1))
+                                i++;
+                            break;
                         case 1: while ((str[i] != '*') && (str[i] != '/') && (i < str.Length - 1))
                                 i++;
                             break;

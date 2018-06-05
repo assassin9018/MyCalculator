@@ -25,3 +25,13 @@ C:\projects\Калькулятор 2.1(C#)\MyCalc\obj\Debug\MyCalc.Properties.Re
 C:\projects\Калькулятор 2.1(C#)\MyCalc\obj\Debug\MyCalc.csproj.GenerateResource.Cache
 C:\projects\Калькулятор 2.1(C#)\MyCalc\obj\Debug\MyCalc.exe
 C:\projects\Калькулятор 2.1(C#)\MyCalc\obj\Debug\MyCalc.pdb
+C:\GitRepositories\MyCalculator\bin\Debug\MyCalc.exe.config
+C:\GitRepositories\MyCalculator\bin\Debug\MyCalc.exe
+C:\GitRepositories\MyCalculator\bin\Debug\MyCalc.pdb
+C:\GitRepositories\MyCalculator\obj\Debug\MyCalc.csprojResolveAssemblyReference.cache
+C:\GitRepositories\MyCalculator\obj\Debug\MyCalc.Form1.resources
+C:\GitRepositories\MyCalculator\obj\Debug\MyCalc.Properties.Resources.resources
+C:\GitRepositories\MyCalculator\obj\Debug\MyCalc.csproj.GenerateResource.cache
+C:\GitRepositories\MyCalculator\obj\Debug\MyCalc.csproj.CoreCompileInputs.cache
+C:\GitRepositories\MyCalculator\obj\Debug\MyCalc.exe
+C:\GitRepositories\MyCalculator\obj\Debug\MyCalc.pdb

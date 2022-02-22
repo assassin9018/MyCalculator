@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace MyCalc
@@ -75,14 +68,14 @@ namespace MyCalc
                         case "ln": temp = Math.Log10(Convert.ToDouble(strBetweenBrackets)); break;
                         case "sqr": temp = Math.Pow(Convert.ToDouble(strBetweenBrackets), 2); break;
                         case "sqrt": temp = Math.Sqrt(Convert.ToDouble(strBetweenBrackets)); break;
-                        /*кейсы с функциями
-                         * frac?
-                         * case "max":
-                         * case "min":
-                         * case "pow":
-                         * case "pow":
-                         * case "log":
-                          */
+                            /*кейсы с функциями
+                             * frac?
+                             * case "max":
+                             * case "min":
+                             * case "pow":
+                             * case "pow":
+                             * case "log":
+                              */
                     }
                     string result = Convert.ToString(Math.Round(temp, RoundDigit));
                     str = str.Insert(startWord, result);
@@ -105,10 +98,12 @@ namespace MyCalc
                             while ((str[i] != '^') && (i < str.Length - 1))
                                 i++;
                             break;
-                        case 1: while ((str[i] != '*') && (str[i] != '/') && (i < str.Length - 1))
+                        case 1:
+                            while ((str[i] != '*') && (str[i] != '/') && (i < str.Length - 1))
                                 i++;
                             break;
-                        case 2: while ((str[i] != '+') && (str[i] != '-') && (i < str.Length - 1) || ((i == 0)))
+                        case 2:
+                            while ((str[i] != '+') && (str[i] != '-') && (i < str.Length - 1) || ((i == 0)))
                                 i++;
                             break;
                         default: i = str.Length; break;
@@ -118,7 +113,7 @@ namespace MyCalc
                         int operationAdrres = i--;
                         while (((Convert.ToByte(str[i]) > 47) || (str[i] == ',')) && (i != 0))
                             i--;
-                        int startFirstNumber= i==0 ? i : i + 1;
+                        int startFirstNumber = i == 0 ? i : i + 1;
                         int endSecondNumber = str[operationAdrres + 1] == '-' ? operationAdrres + 2 : operationAdrres + 1;
                         while (((Convert.ToByte(str[endSecondNumber]) > 47) || (str[endSecondNumber] == ',')) && (endSecondNumber != str.Length - 1))
                             endSecondNumber++;
@@ -201,7 +196,7 @@ namespace MyCalc
                 if (History.Items.Count == 0 || textBox1.Text != History.Items[History.Items.Count - 1].ToString())
                     History.Items.Add(textBox1.Text);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -209,7 +204,7 @@ namespace MyCalc
 
         private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if(e.KeyChar==(char)Keys.Enter)
+            if (e.KeyChar == (char)Keys.Enter)
                 button1_Click(sender, new EventArgs());
         }
 

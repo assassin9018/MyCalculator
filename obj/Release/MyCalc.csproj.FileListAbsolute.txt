@@ -1,9 +1,0 @@
-D:\Мой резерв\projects\Калькулятор 2.1(C#)\MyCalc\bin\Release\MyCalc.exe.config
-E:\Мой резерв\projects\Калькулятор 2.1(C#)\MyCalc\bin\Release\MyCalc.exe.config
-E:\Мой резерв\projects\Калькулятор 2.1(C#)\MyCalc\bin\Release\MyCalc.exe
-E:\Мой резерв\projects\Калькулятор 2.1(C#)\MyCalc\bin\Release\MyCalc.pdb
-E:\Мой резерв\projects\Калькулятор 2.1(C#)\MyCalc\obj\Release\MyCalc.Form1.resources
-E:\Мой резерв\projects\Калькулятор 2.1(C#)\MyCalc\obj\Release\MyCalc.Properties.Resources.resources
-E:\Мой резерв\projects\Калькулятор 2.1(C#)\MyCalc\obj\Release\MyCalc.csproj.GenerateResource.Cache
-E:\Мой резерв\projects\Калькулятор 2.1(C#)\MyCalc\obj\Release\MyCalc.exe
-E:\Мой резерв\projects\Калькулятор 2.1(C#)\MyCalc\obj\Release\MyCalc.pdb

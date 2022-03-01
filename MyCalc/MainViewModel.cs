@@ -2,7 +2,8 @@
 using System.Collections.ObjectModel;
 
 namespace MyCalc;
-internal class MainViewModel : ObservableObject
+
+public partial class MainViewModel : ObservableObject
 {
     [ObservableProperty]
     private string _calcExpresion = string.Empty;
@@ -10,6 +11,7 @@ internal class MainViewModel : ObservableObject
     private int _roundAccuracy = 2;
 
     public ObservableCollection<int> AvailableAccuracy { get; set; }
+    public ObservableCollection<int> History { get; set; }
 
     public MainViewModel()
     {

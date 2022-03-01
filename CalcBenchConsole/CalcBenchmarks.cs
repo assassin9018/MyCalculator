@@ -18,18 +18,24 @@ public class CalcBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public void RunLegacy()
+    public double RunLegacy()
     {
+        double sum = 0;
         var calc = new LegacyCalculator(0);
         for(int i = 0; i < 1001; i++)
-            calc.Handle(N);
+            sum += calc.Handle(N);
+
+        return sum;
     }
 
     [Benchmark]
-    public void RunSmart()
+    public double RunSmart()
     {
+        double sum = 0;
         var calc = new SmartCalculator(Array.Empty<string>());
         for(int i = 0; i < 1001; i++)
-            calc.Execute(N, 0);
+            sum += calc.Execute(N, 0);
+
+        return sum;
     }
 }

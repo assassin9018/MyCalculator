@@ -1,0 +1,49 @@
+﻿<Window x:Class="MyCalc.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MyCalc"
+        mc:Ignorable="d"
+        Title="My smart calculator" 
+        d:DesignHeight="390" d:DesignWidth="599"
+        Height="390" Width="599">
+    <Window.Resources>
+        <local:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </Window.Resources>
+    <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="pack://application:,,,/Assets/BackImg.jpg"/>
+        </Grid.Background>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Vertical" Margin="20,10,20,0" Grid.Row="0">
+            <ComboBox ItemsSource="{Binding History}" SelectedItem="{Binding Text, ElementName=tbExpresion, Mode=TwoWay}"/>
+            <Grid  Margin="0,5,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="30"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <TextBox Grid.Column="0" x:Name="tbExpresion" TextChanged="tbExpresion_TextChanged"/>
+                <TextBlock Grid.Column="1" Text="=" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White"/>
+                <TextBox Grid.Column="2"/>
+            </Grid>
+            <Grid Margin="0,5,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="100"/>
+                </Grid.ColumnDefinitions>
+                <Button x:Name="Execute" Content="Выполнить" Grid.Column="0"/>
+                <CheckBox x:Name="checkBox" Content="Отобразить строитель графиков" Foreground="White" Margin="10,0,10,0" VerticalAlignment="Center" Grid.Column="1"/>
+                <ComboBox Grid.Column="2" x:Name="Accuracy" ItemsSource="{Binding AvailableAccuracy}" SelectedItem="{Binding RoundAccuracy, Mode=TwoWay}"/>
+            </Grid>
+        </StackPanel>
+        <Grid Grid.Row="1" Margin="10" Visibility="{Binding IsChecked, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=checkBox}" >
+            <Rectangle Fill="White"/>
+        </Grid>
+    </Grid>
+</Window>

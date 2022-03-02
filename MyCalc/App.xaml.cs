@@ -1,5 +1,7 @@
 ﻿using Calculation;
 using Microsoft.Extensions.DependencyInjection;
+using MyCalc.ViewModels;
+using MyCalc.Models;
 using System;
 using System.Windows;
 

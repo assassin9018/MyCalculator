@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace Calculation;
 
-namespace Calculation;
-internal class VariableNode : IExpressionNode
+public class VariableNode : IExpressionNode
 {
     private readonly string _name;
     public double Value { get; private set; }
@@ -14,10 +12,14 @@ internal class VariableNode : IExpressionNode
         _name = name;
     }
 
-    public void Recalculate(Dictionary<string, double> keyValues)
+    public void Recalculate(Dictionary<string, IExpressionNode> keyValues)
     {
-        if(!keyValues.TryGetValue(_name, out double value))
+        if(!keyValues.TryGetValue(_name, out var node))
             throw new ArgumentException($"Variable {_name} not found.");
-        Value = value;
+
+        if(!node.IsConst)
+            node.Recalculate(keyValues);
+
+        Value = node.Value;
     }
 }

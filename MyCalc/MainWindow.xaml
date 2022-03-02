@@ -4,13 +4,16 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MyCalc"
+        xmlns:models="clr-namespace:MyCalc.Models"
+        xmlns:viewModels="clr-namespace:MyCalc.ViewModels"
+        xmlns:oxy="http://oxyplot.org/wpf"
         mc:Ignorable="d"
         Title="My smart calculator" 
         d:DesignHeight="390" d:DesignWidth="599"
         Height="390" Width="599">
-    <Window.Resources>
-        <local:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
-    </Window.Resources>
+    <Window.DataContext>
+        <viewModels:MainViewModel/>
+    </Window.DataContext>
     <Grid>
         <Grid.Background>
             <ImageBrush ImageSource="pack://application:,,,/Assets/BackImg.jpg"/>
@@ -19,7 +22,7 @@
             <RowDefinition Height="auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <StackPanel Orientation="Vertical" Margin="20,10,20,0" Grid.Row="0">
+        <StackPanel Orientation="Vertical" Margin="10,10,10,0" Grid.Row="0">
             <ComboBox ItemsSource="{Binding History}" SelectedItem="{Binding Text, ElementName=tbExpresion, Mode=TwoWay}"/>
             <Grid  Margin="0,5,0,0">
                 <Grid.ColumnDefinitions>
@@ -27,7 +30,7 @@
                     <ColumnDefinition Width="30"/>
                     <ColumnDefinition Width="1*"/>
                 </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0" x:Name="tbExpresion" Text="{Binding CalcExpression, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="tbExpresion_TextChanged">
+                <TextBox Grid.Column="0" x:Name="tbExpresion" Text="{Binding CalcExpression, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                     <TextBox.InputBindings>
                         <KeyBinding Command="{Binding Execute}" Key="Return"/>
                     </TextBox.InputBindings>
@@ -43,12 +46,66 @@
                     <ColumnDefinition Width="100"/>
                 </Grid.ColumnDefinitions>
                 <Button x:Name="Execute" Content="Выполнить" Grid.Column="0" Command="{Binding Execute}"/>
-                <CheckBox x:Name="checkBox" Content="Отобразить строитель графиков" Foreground="White" Margin="10,0,10,0" VerticalAlignment="Center" Grid.Column="1" Grid.ColumnSpan="2"/>
+                <CheckBox x:Name="BuildPlot" Content="Отобразить строитель графиков" IsChecked="{Binding PlotMode}" Foreground="White" Margin="10,0,10,0" VerticalAlignment="Center" Grid.Column="1" Grid.ColumnSpan="2"/>
                 <ComboBox Grid.Column="3" x:Name="Accuracy" ItemsSource="{Binding AvailableAccuracy}" SelectedItem="{Binding RoundAccuracy, Mode=TwoWay}"/>
             </Grid>
         </StackPanel>
-        <Grid Grid.Row="1" Margin="10" Visibility="{Binding IsChecked, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=checkBox}" >
-            <Rectangle Fill="White"/>
+
+        <Grid Grid.Row="1" Margin="10" Visibility="{Binding IsChecked, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=BuildPlot}" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Button Content="Добавить" Command="{Binding AddVariable}" Grid.Column="0" Margin="5,2,5,2"/>
+                <Button Content="Удалить" Command="{Binding RemoveVariable}" Grid.Column="1" Margin="5,2,5,2"/>
+            </Grid>
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0" HorizontalAlignment="Stretch" Background="AliceBlue">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="15"/>
+                        <RowDefinition Height="20"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="От" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0"/>
+                    <TextBox Margin="2,0,2,0" Grid.Row="1" Grid.Column="0" Text="{Binding From, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+
+                    <TextBlock Text="До" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0"/>
+                    <TextBox Margin="2,0,2,0" Grid.Row="1" Grid.Column="1" Text="{Binding To, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+
+                    <TextBlock Text="Шаг" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0"/>
+                    <TextBox Margin="2,0,2,0" Grid.Row="1" Grid.Column="2" Text="{Binding Step, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                </Grid>
+                <ListView ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                          SelectedItem="{Binding SelectedVariable, Mode=TwoWay}"
+                          ItemTemplate="{StaticResource VariableTemplate}"
+                          HorizontalContentAlignment="Stretch"  
+                          ItemsSource="{Binding Variables}" 
+                          Margin="0,5,0,0"
+                          Background="AliceBlue"
+                          BorderThickness="0"
+                          Grid.Row="1"/>
+            </Grid>
+
+            <oxy:PlotView Model="{Binding Plot}" Grid.Column="1" Grid.Row="1" Margin="10,0,0,0">
+            </oxy:PlotView>
         </Grid>
     </Grid>
 </Window>

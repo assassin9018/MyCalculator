@@ -8,23 +8,37 @@ public class SmartCalculator
 {
     private static readonly HashSet<string> _oneArgFunctions = new(Enum.GetValues<OneArgFunctionType>().Select(x => x.ToString().ToLower()));
     private static readonly HashSet<string> _twoArgFunctions = new(Enum.GetValues<TwoArgFunctionType>().Select(x => x.ToString().ToLower()));
+    private static readonly HashSet<string> _emptyVariables = new();
+    private readonly HashSet<string> _variables;
 
-    private readonly HashSet<string> _variables = new();
+    public SmartCalculator()
+    {
+        _variables = _emptyVariables;
+    }
 
     public SmartCalculator(IEnumerable<string> variables)
     {
-        _variables = new(variables.Select(x=>x.ToLower()));
+        _variables = new();
+        foreach(string variable in variables)
+        {
+            if(_oneArgFunctions.Contains(variable) || _twoArgFunctions.Contains(variable))
+                throw new ArgumentException($"Could not declare variable {variable}, because there is fuction with the same name.");
+            _variables.Add(variable);
+        }
     }
 
-    public double Execute(string expression, int round)
+    public IExpressionNode Parse(string expression, int accuracy)
     {
         string cleanedExpression = expression.Replace(" ", "").ToLower();
         ThrowIfNotValidExpression(cleanedExpression);
 
         IExpressionNode head = BuildTree(cleanedExpression.AsSpan());
 
-        return new TwoArgFunctionNode(head, new ValueNode(round), TwoArgFunctionType.Rnd2).Value;
+        return new TwoArgFunctionNode(head, new ValueNode(accuracy), TwoArgFunctionType.Rnd2);
     }
+
+    public double Execute(string expression, int round)
+        => Parse(expression, round).Value;
 
     private IExpressionNode BuildTree(ReadOnlySpan<char> expressionStr)
     {

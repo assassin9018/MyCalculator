@@ -1,5 +1,5 @@
-﻿using System.Windows;
-using System.Windows.Controls;
+﻿using MyCalc.ViewModels;
+using System.Windows;
 
 namespace MyCalc;
 /// <summary>
@@ -11,10 +11,5 @@ public partial class MainWindow : Window
     {
         DataContext = viewModel;
         InitializeComponent();
-    }
-
-    private void tbExpresion_TextChanged(object sender, TextChangedEventArgs e)
-    {
-
     }
 }

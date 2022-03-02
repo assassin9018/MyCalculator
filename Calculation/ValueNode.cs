@@ -2,7 +2,7 @@
 
 namespace Calculation;
 
-internal class ValueNode : IExpressionNode
+public class ValueNode : IExpressionNode
 {
     public double Value { get;}
 
@@ -13,7 +13,7 @@ internal class ValueNode : IExpressionNode
         Value = value;
     }
 
-    public void Recalculate(Dictionary<string, double> keyValues)
+    public void Recalculate(Dictionary<string, IExpressionNode> keyValues)
     {
         //nothing to do
     }

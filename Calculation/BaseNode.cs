@@ -23,7 +23,7 @@ internal abstract class BaseNode : IExpressionNode
 
     protected abstract void Execute();
 
-    public void Recalculate(Dictionary<string, double> keyValues)
+    public void Recalculate(Dictionary<string, IExpressionNode> keyValues)
     {
         if(_first.IsConst & _second.IsConst)
             return;

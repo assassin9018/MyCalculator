@@ -2,9 +2,9 @@
 
 namespace Calculation;
 
-internal interface IExpressionNode
+public interface IExpressionNode
 {
     double Value { get; }
     bool IsConst { get; }
-    void Recalculate(Dictionary<string, double> keyValues);
+    void Recalculate(Dictionary<string, IExpressionNode> keyValues);
 }

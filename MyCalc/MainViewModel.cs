@@ -35,7 +35,7 @@ public partial class MainViewModel : ObservableObject
                 double result = calc.Execute(CalcExpression, RoundAccuracy);
                 Answer = result.ToString();
 
-                if(History.Contains(CalcExpression))
+                if(!History.Contains(CalcExpression))
                     History.Add(CalcExpression);
             }
             catch

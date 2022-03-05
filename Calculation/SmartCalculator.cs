@@ -34,7 +34,7 @@ public class SmartCalculator
 
         IExpressionNode head = BuildTree(cleanedExpression.AsSpan());
 
-        return new TwoArgFunctionNode(head, new ValueNode(accuracy), TwoArgFunctionType.Rnd2);
+        return new TwoArgFunctionNode(head, new ValueNode(accuracy), TwoArgFunctionType.Rndx);
     }
 
     public double Execute(string expression, int round)
@@ -160,6 +160,7 @@ public class SmartCalculator
             "rnd" => OneArgFunctionType.Rnd,
             "exp" => OneArgFunctionType.Exp,
             "ln" => OneArgFunctionType.Ln,
+            "log" => OneArgFunctionType.Log,
             "sqr" => OneArgFunctionType.Sqr,
             "sqrt" => OneArgFunctionType.Sqrt,
             _ => throw new InvalidOperationException($"Not supported instruction({word}) detected!"),
@@ -173,8 +174,8 @@ public class SmartCalculator
             "min" => TwoArgFunctionType.Min,
             "max" => TwoArgFunctionType.Max,
             "pow" => TwoArgFunctionType.Pow,
-            "log" => TwoArgFunctionType.Log,
-            "rnd2" => TwoArgFunctionType.Rnd2,
+            "rndx" => TwoArgFunctionType.Rndx,
+            "logx" => TwoArgFunctionType.Logx,
             _ => throw new InvalidOperationException($"Not supported instruction({word}) detected!"),
         };
     }

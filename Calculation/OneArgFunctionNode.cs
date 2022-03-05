@@ -26,7 +26,8 @@ internal class OneArgFunctionNode : BaseNode
             OneArgFunctionType.Int => Math.Truncate(_first.Value),
             OneArgFunctionType.Rnd => Math.Round(_first.Value),
             OneArgFunctionType.Exp => Math.Exp(_first.Value),
-            OneArgFunctionType.Ln => Math.Log10(_first.Value),
+            OneArgFunctionType.Ln => Math.Log2(_first.Value),
+            OneArgFunctionType.Log => Math.Log10(_first.Value),
             OneArgFunctionType.Sqr => Math.Pow(_first.Value, 2),
             OneArgFunctionType.Sqrt => Math.Sqrt(_first.Value),
             _ => throw new InvalidOperationException("Не поддерживаемая функция")

@@ -20,6 +20,7 @@ internal enum OneArgFunctionType
     Rnd,
     Exp,
     Ln,
+    Log,
     Sqr,
     Sqrt,
 }
@@ -29,6 +30,6 @@ internal enum TwoArgFunctionType
     Min,
     Max,
     Pow,
-    Log,
-    Rnd2,
+    Rndx,
+    Logx,
 }

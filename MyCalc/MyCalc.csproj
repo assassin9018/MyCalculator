@@ -23,4 +23,9 @@
     <ProjectReference Include="..\Calculation\Calculation.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Assets\help_ru.rtf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>

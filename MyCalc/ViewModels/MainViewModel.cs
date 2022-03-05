@@ -196,6 +196,15 @@ public partial class MainViewModel : ObservableObject
             AnyChanges = true;
         });
 
+    private IRelayCommand? _showHelpCommand;
+    public IRelayCommand ShowHelp
+        => _showHelpCommand ??= CreateCommandWithTryBlock(()
+            =>
+        {
+            HelpWindow window = new();
+            window.ShowDialog();
+        });
+
     private static RelayCommand CreateCommandWithTryBlock(Action action)
     {
         return new RelayCommand(() =>

@@ -27,6 +27,7 @@
             <MenuItem Header="Сервис">
                 <MenuItem Command="{Binding ClearHistory}" Header="Очистить историю"/>
             </MenuItem>
+            <MenuItem Command="{Binding ShowHelp}" Header="Справка"/>
         </Menu>
     <Grid Background="{StaticResource gradientStyle}" Grid.Row="1">
         <Grid.RowDefinitions>

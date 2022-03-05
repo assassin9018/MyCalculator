@@ -1,0 +1,20 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <LinearGradientBrush x:Key="gradientStyle" StartPoint="1.0,0.0" EndPoint="0.0,1.0">
+        <GradientStop Color="White" Offset="0" />
+        <GradientStop Color="LightBlue" Offset="1" />
+    </LinearGradientBrush>
+
+    <Style TargetType="TextBlock">
+        <Style.Setters>
+            <Setter Property="Foreground" Value="DarkSlateBlue"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontFamily" Value="Cascadia code"/>
+            <Setter Property="FontWeight" Value="Light"/>
+            <Setter Property="FontStyle" Value="Italic"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style.Setters>
+    </Style>
+</ResourceDictionary>

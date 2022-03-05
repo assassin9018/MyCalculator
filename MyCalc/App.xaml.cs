@@ -1,9 +1,9 @@
 ﻿using Calculation;
 using Microsoft.Extensions.DependencyInjection;
 using MyCalc.ViewModels;
-using MyCalc.Models;
 using System;
 using System.Windows;
+using MyCalc.Services;
 
 namespace MyCalc;
 /// <summary>
@@ -11,7 +11,7 @@ namespace MyCalc;
 /// </summary>
 public partial class App : Application
 {
-    private ServiceProvider _serviceProvider;
+    private readonly ServiceProvider _serviceProvider;
 
     public App()
     {
@@ -30,10 +30,9 @@ public partial class App : Application
 
     private static void ConfigureServices(ServiceCollection services)
     {
+        services.AddSingleton<IDialogService, DialogService>();
         services.AddSingleton<MainViewModel>();
         services.AddSingleton<MainWindow>();
-        services.AddTransient<SmartCalculator>();
-        services.AddTransient<PlotDrawer>();
     }
 
     private void OnStartup(object sender, StartupEventArgs e)

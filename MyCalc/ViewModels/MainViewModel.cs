@@ -2,17 +2,24 @@
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using MyCalc.Models;
+using MyCalc.Services;
+using MyCalc.Views;
 using OxyPlot;
 using OxyPlot.Series;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
+using System.Text.Json;
+using System.Windows;
 
 namespace MyCalc.ViewModels;
 
 public partial class MainViewModel : ObservableObject
 {
+    private readonly IDialogService _dialogService;
+
     [ObservableProperty]
     private string _calcExpression = string.Empty;
     [ObservableProperty]
@@ -31,14 +38,18 @@ public partial class MainViewModel : ObservableObject
     private PlotModel _plot = new();
     [ObservableProperty]
     private bool _plotMode = false;
+    [ObservableProperty]
+    private string _currentSaveFile = string.Empty;
+    [ObservableProperty]
+    private bool _anyChanges = false;
 
     public ObservableCollection<int> AvailableAccuracy { get; set; } = new(new[] { 0, 1, 2, 3, 4, 5, 6 });
     public ObservableCollection<VariableModel> Variables { get; set; } = new();
     public ObservableCollection<string> History { get; set; } = new();
 
-    public MainViewModel()
+    public MainViewModel(IDialogService dialogService)
     {
-        Plot.Title = "График";
+        _dialogService = dialogService;
     }
 
     private void BuildPlot()
@@ -79,56 +90,147 @@ public partial class MainViewModel : ObservableObject
 
     private IRelayCommand? _executeCommand;
     public IRelayCommand Execute
-        => _executeCommand ??= new RelayCommand(()
+        => _executeCommand ??= CreateCommandWithTryBlock(()
             =>
         {
-            try
-            {
-                if(PlotMode)
-                    BuildPlot();
-                else
-                    Answer = new SmartCalculator().Execute(CalcExpression, RoundAccuracy);
+            double result = 0;
 
-                if(!History.Contains(CalcExpression))
-                    History.Add(CalcExpression);
-            }
-            catch
-            {
-                //empty
-            }
+            if(PlotMode)
+                BuildPlot();
+            else
+                result = new SmartCalculator().Execute(CalcExpression, RoundAccuracy);
+
+            Answer = result;
+
+            if(!History.Contains(CalcExpression))
+                History.Add(CalcExpression);
         });
 
     private IRelayCommand? _addVariableCommand;
     public IRelayCommand AddVariable
-        => _addVariableCommand ??= new RelayCommand(()
+        => _addVariableCommand ??= CreateCommandWithTryBlock(()
             =>
         {
-            try
-            {
-                VariableModel model = new();
-                Variables.Add(model);
-                SelectedVariable = model;
-            }
-            catch
-            {
-                //empty
-            }
+            VariableModel model = new();
+            Variables.Add(model);
+            SelectedVariable = model;
         });
-
 
     private IRelayCommand? _removeVariableCommand;
     public IRelayCommand RemoveVariable
-        => _removeVariableCommand ??= new RelayCommand(()
+        => _removeVariableCommand ??= CreateCommandWithTryBlock(()
             =>
+        {
+            if(SelectedVariable is not null)
+                Variables.Remove(SelectedVariable);
+        });
+
+    private IRelayCommand? _openCommand;
+    public IRelayCommand Open
+        => _openCommand ??= CreateCommandWithTryBlock(()
+            =>
+        {
+            if(!_dialogService.OpenFileDialog())
+                return;
+            string path = _dialogService.FilePath;
+            using FileStream fs = File.OpenRead(path);
+            MscSave savedState = JsonSerializer.Deserialize<MscSave>(fs) ?? throw new ArgumentNullException(nameof(savedState));
+
+            History.Clear();
+
+            foreach(string exp in savedState.History)
+                History.Add(exp);
+
+            Variables.Clear();
+            foreach(VariableModel vm in savedState.Variables)
+                Variables.Add(vm);
+
+            From = savedState.From;
+            To = savedState.To;
+            Step = savedState.Step;
+            AnyChanges = false;
+        });
+
+    private IRelayCommand? _saveCommand;
+    public IRelayCommand Save
+        => _saveCommand ??= CreateCommandWithTryBlock(()
+            =>
+        {
+            if(string.IsNullOrEmpty(CurrentSaveFile))
+                if(_dialogService.SaveFileDialog())
+                    CurrentSaveFile = _dialogService.FilePath;
+                else
+                    return;
+
+            SaveCurrentState();
+        });
+
+    private IRelayCommand? _saveAsCommand;
+    public IRelayCommand SaveAs
+        => _saveAsCommand ??= CreateCommandWithTryBlock(()
+            =>
+        {
+            if(_dialogService.SaveFileDialog())
+                CurrentSaveFile = _dialogService.FilePath;
+            else
+                return;
+
+            SaveCurrentState();
+        });
+
+    private IRelayCommand? _exitCommand;
+    public IRelayCommand Exit
+        => _exitCommand ??= CreateCommandWithTryBlock(()
+            =>
+        {
+            if(!AnyChanges || MessageBoxResult.Yes == MessageBox.Show("Обнаружены несохранённые изменения. Всё равно закрыть", "Внимание", MessageBoxButton.YesNo, MessageBoxImage.Warning))
+                Application.Current.Shutdown();
+        });
+
+    private IRelayCommand? _clearHistoryCommand;
+    public IRelayCommand ClearHistory
+        => _clearHistoryCommand ??= CreateCommandWithTryBlock(()
+            =>
+        {
+            History.Clear();
+            AnyChanges = true;
+        });
+
+    private static RelayCommand CreateCommandWithTryBlock(Action action)
+    {
+        return new RelayCommand(() =>
         {
             try
             {
-                if(SelectedVariable is not null)
-                    Variables.Remove(SelectedVariable);
+                action();
             }
             catch
             {
                 //empty
             }
         });
+    }
+
+    private void SaveCurrentState()
+    {
+        if(string.IsNullOrEmpty(CurrentSaveFile))
+            return;
+
+        MscSave currentState = new()
+        {
+            From = From,
+            To = To,
+            Step = Step,
+            History = History.ToList(),
+            Variables = Variables.ToList(),
+        };
+
+        if(File.Exists(CurrentSaveFile))
+            File.Delete(CurrentSaveFile);
+
+        using FileStream fs = File.OpenWrite(CurrentSaveFile);
+        JsonSerializer.Serialize(fs, currentState);
+
+        AnyChanges = false;
+    }
 }

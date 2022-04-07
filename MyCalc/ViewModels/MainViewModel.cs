@@ -52,24 +52,20 @@ public partial class MainViewModel : ObservableObject
         _dialogService = dialogService;
     }
 
-    private void BuildPlot()
+    private void BuildPlot(SmartCalculator calc, Dictionary<string, IExpressionNode> variablesTrees)
     {
         if(To <= From)
             throw new ArgumentException("From have to be less than To.");
         if(Step <= 0)
             throw new ArgumentException("Step should be more than 0.");
 
-        SmartCalculator calc = new(Variables.Select(x => x.Name));
-
-        var variablesTrees = Variables
-            .Where(x => !string.IsNullOrEmpty(x.Expression))
-            .ToDictionary(key => key.Name, value => calc.Parse(value.Expression, RoundAccuracy));
-        List<string> realVarialbeNames = new();
+        
+        List<string> realVariableNames = new();
         foreach(var variable in Variables.Where(x => string.IsNullOrEmpty(x.Expression)))
         {
             string name = variable.Name;
             variablesTrees.Add(name, new VariableNode(name));
-            realVarialbeNames.Add(name);
+            realVariableNames.Add(name);
         }
 
 
@@ -78,7 +74,7 @@ public partial class MainViewModel : ObservableObject
         for(double i = From; i < To; i += Step)
         {
             ValueNode node = new(i);
-            foreach(string name in realVarialbeNames)
+            foreach(string name in realVariableNames)
                 variablesTrees[name] = node;
             head.Recalculate(variablesTrees);
             series.Points.Add(new(i, head.Value));
@@ -95,10 +91,16 @@ public partial class MainViewModel : ObservableObject
         {
             double result = 0;
 
+            SmartCalculator calc = new(Variables.Select(x => x.Name));
+
+            var variablesTrees = Variables
+                .Where(x => !string.IsNullOrEmpty(x.Expression))
+                .ToDictionary(key => key.Name, value => calc.Parse(value.Expression, RoundAccuracy));
+
             if(PlotMode)
-                BuildPlot();
+                BuildPlot(calc, variablesTrees);
             else
-                result = new SmartCalculator().Execute(CalcExpression, RoundAccuracy);
+                result = calc.Execute(CalcExpression, RoundAccuracy, variablesTrees);
 
             Answer = result;
 
@@ -132,7 +134,7 @@ public partial class MainViewModel : ObservableObject
         {
             if(!_dialogService.OpenFileDialog())
                 return;
-            string path = _dialogService.FilePath;
+            string path = _currentSaveFile = _dialogService.FilePath;
             using FileStream fs = File.OpenRead(path);
             MscSave savedState = JsonSerializer.Deserialize<MscSave>(fs) ?? throw new ArgumentNullException(nameof(savedState));
 
@@ -145,10 +147,14 @@ public partial class MainViewModel : ObservableObject
             foreach(VariableModel vm in savedState.Variables)
                 Variables.Add(vm);
 
+            CalcExpression = History.LastOrDefault(string.Empty);
+
             From = savedState.From;
             To = savedState.To;
             Step = savedState.Step;
             AnyChanges = false;
+
+            Execute.Execute(null);
         });
 
     private IRelayCommand? _saveCommand;

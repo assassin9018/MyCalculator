@@ -1,6 +1,7 @@
 using Calculation;
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 
 namespace MyCalcTests;
 public class Tests
@@ -44,7 +45,7 @@ public class Tests
         SmartCalculator smartCalc = new(Array.Empty<string>());
         LegacyCalculator legacyCalc = new(round);
         double legacyResult = legacyCalc.Handle(exprassion);
-        double smartResult = smartCalc.Execute(exprassion, round);
+        double smartResult = smartCalc.Execute(exprassion, round, new());
         Assert.AreEqual(legacyResult, smartResult);
         Assert.Pass();
     }

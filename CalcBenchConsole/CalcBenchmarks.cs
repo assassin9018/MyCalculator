@@ -34,7 +34,7 @@ public class CalcBenchmarks
         double sum = 0;
         var calc = new SmartCalculator(Array.Empty<string>());
         for(int i = 0; i < 1001; i++)
-            sum += calc.Execute(N, 0);
+            sum += calc.Execute(N, 0, new());
 
         return sum;
     }

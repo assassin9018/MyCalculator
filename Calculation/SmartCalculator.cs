@@ -37,8 +37,13 @@ public class SmartCalculator
         return new TwoArgFunctionNode(head, new ValueNode(accuracy), TwoArgFunctionType.Rndx);
     }
 
-    public double Execute(string expression, int round)
-        => Parse(expression, round).Value;
+    public double Execute(string expression, int round, Dictionary<string, IExpressionNode> variablesTrees)
+    {
+        IExpressionNode tree = Parse(expression, round);
+        tree.Recalculate(variablesTrees);
+
+        return tree.Value;
+    }
 
     private IExpressionNode BuildTree(ReadOnlySpan<char> expressionStr)
     {

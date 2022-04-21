@@ -5,13 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MyCalc"
         xmlns:models="clr-namespace:MyCalc.Models"
-        xmlns:viewModels="clr-namespace:MyCalc.ViewModels"
+        xmlns:vms="clr-namespace:MyCalc.ViewModels"
         xmlns:oxy="http://oxyplot.org/wpf"
         mc:Ignorable="d"
         Title="My smart calculator" 
         Icon="/Assets/AppIco.ico"
         d:DesignHeight="400" d:DesignWidth="600"
         Height="400" Width="600">
+    <!--<Window.DataContext>
+        <vms:MainViewModel/>
+    </Window.DataContext>-->
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -19,15 +22,15 @@
         </Grid.RowDefinitions>
         <Menu Grid.Row="0">
             <MenuItem Header="Файл">
-                <MenuItem Command="{Binding Open}" Header="Открыть"/>
-                <MenuItem Command="{Binding Save}" Header="Сохранить"/>
-                <MenuItem Command="{Binding SaveAs}" Header="Сохранить как"/>
-                <MenuItem Command="{Binding Exit}" Header="Выход"/>
+                <MenuItem Command="{Binding OpenCommand}" Header="Открыть"/>
+                <MenuItem Command="{Binding SaveCommand}" Header="Сохранить"/>
+                <MenuItem Command="{Binding SaveAsCommand}" Header="Сохранить как"/>
+                <MenuItem Command="{Binding ExitCommand}" Header="Выход"/>
             </MenuItem>
             <MenuItem Header="Сервис">
-                <MenuItem Command="{Binding ClearHistory}" Header="Очистить историю"/>
+                <MenuItem Command="{Binding ClearHistoryCommand}" Header="Очистить историю"/>
             </MenuItem>
-            <MenuItem Command="{Binding ShowHelp}" Header="Справка"/>
+            <MenuItem Command="{Binding ShowHelpCommand}" Header="Справка"/>
         </Menu>
         <Grid Background="{StaticResource gradientStyle}" Grid.Row="1">
             <Grid.RowDefinitions>
@@ -44,7 +47,7 @@
                     </Grid.ColumnDefinitions>
                     <TextBox Grid.Column="0" x:Name="tbExpresion" Text="{Binding CalcExpression, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                         <TextBox.InputBindings>
-                            <KeyBinding Command="{Binding Execute}" Key="Return"/>
+                            <KeyBinding Command="{Binding ExecuteCommand}" Key="Return"/>
                         </TextBox.InputBindings>
                     </TextBox>
                     <TextBlock Grid.Column="1" Text="="/>
@@ -57,7 +60,7 @@
                         <ColumnDefinition Width="131*"/>
                         <ColumnDefinition Width="100"/>
                     </Grid.ColumnDefinitions>
-                    <Button Content="Выполнить" Grid.Column="0" Command="{Binding Execute}"/>
+                    <Button Content="Выполнить" Grid.Column="0" Command="{Binding ExecuteCommand}"/>
                     <CheckBox x:Name="BuildPlot" Content="Режим построения графиков" IsChecked="{Binding PlotMode}" Foreground="White" Margin="10,0,10,0" VerticalAlignment="Center" Grid.Column="1" Grid.ColumnSpan="2"/>
                     <ComboBox Grid.Column="3" x:Name="Accuracy" ItemsSource="{Binding AvailableAccuracy}" SelectedItem="{Binding RoundAccuracy, Mode=TwoWay}"/>
                 </Grid>
@@ -75,8 +78,8 @@
                         <ColumnDefinition Width="100"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <Button Content="Добавить" Command="{Binding AddVariable}" Grid.Column="0" Margin="5,2,5,2"/>
-                    <Button Content="Удалить" Command="{Binding RemoveVariable}" Grid.Column="1" Margin="5,2,5,2"/>
+                    <Button Content="Добавить" Command="{Binding AddVariableCommand}" Grid.Column="0" Margin="5,2,5,2"/>
+                    <Button Content="Удалить" Command="{Binding RemoveVariableCommand}" Grid.Column="1" Margin="5,2,5,2"/>
                 </Grid>
                 <Grid Grid.Row="1">
                     <Grid.ColumnDefinitions>

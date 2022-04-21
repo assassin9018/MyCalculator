@@ -47,6 +47,11 @@ public partial class MainViewModel : ObservableObject
     public ObservableCollection<VariableModel> Variables { get; set; } = new();
     public ObservableCollection<string> History { get; set; } = new();
 
+    public MainViewModel()
+    {
+
+    }
+
     public MainViewModel(IDialogService dialogService)
     {
         _dialogService = dialogService;
@@ -59,7 +64,7 @@ public partial class MainViewModel : ObservableObject
         if(Step <= 0)
             throw new ArgumentException("Step should be more than 0.");
 
-        
+
         List<string> realVariableNames = new();
         foreach(var variable in Variables.Where(x => string.IsNullOrEmpty(x.Expression)))
         {
@@ -84,146 +89,113 @@ public partial class MainViewModel : ObservableObject
         Plot.Series.Add(series);
     }
 
-    private IRelayCommand? _executeCommand;
-    public IRelayCommand Execute
-        => _executeCommand ??= CreateCommandWithTryBlock(()
-            =>
-        {
-            double result = 0;
+    [ICommand]
+    private void Execute()
+    {
+        double result = 0;
 
-            SmartCalculator calc = new(Variables.Select(x => x.Name));
+        SmartCalculator calc = new(Variables.Select(x => x.Name));
 
-            var variablesTrees = Variables
-                .Where(x => !string.IsNullOrEmpty(x.Expression))
-                .ToDictionary(key => key.Name, value => calc.Parse(value.Expression, RoundAccuracy));
+        var variablesTrees = Variables
+            .Where(x => !string.IsNullOrEmpty(x.Expression))
+            .ToDictionary(key => key.Name, value => calc.Parse(value.Expression, RoundAccuracy));
 
-            if(PlotMode)
-                BuildPlot(calc, variablesTrees);
-            else
-                result = calc.Execute(CalcExpression, RoundAccuracy, variablesTrees);
+        if(PlotMode)
+            BuildPlot(calc, variablesTrees);
+        else
+            result = calc.Execute(CalcExpression, RoundAccuracy, variablesTrees);
 
-            Answer = result;
+        Answer = result;
 
-            if(!History.Contains(CalcExpression))
-                History.Add(CalcExpression);
-        });
+        if(!History.Contains(CalcExpression))
+            History.Add(CalcExpression);
+    }
 
-    private IRelayCommand? _addVariableCommand;
-    public IRelayCommand AddVariable
-        => _addVariableCommand ??= CreateCommandWithTryBlock(()
-            =>
-        {
-            VariableModel model = new();
-            Variables.Add(model);
-            SelectedVariable = model;
-        });
+    [ICommand]
+    private void AddVariable()
+    {
+        VariableModel model = new();
+        Variables.Add(model);
+        SelectedVariable = model;
+    }
 
-    private IRelayCommand? _removeVariableCommand;
-    public IRelayCommand RemoveVariable
-        => _removeVariableCommand ??= CreateCommandWithTryBlock(()
-            =>
-        {
-            if(SelectedVariable is not null)
-                Variables.Remove(SelectedVariable);
-        });
+    [ICommand]
+    private void RemoveVariable()
+    {
+        if(SelectedVariable is not null)
+            Variables.Remove(SelectedVariable);
+    }
 
-    private IRelayCommand? _openCommand;
-    public IRelayCommand Open
-        => _openCommand ??= CreateCommandWithTryBlock(()
-            =>
-        {
-            if(!_dialogService.OpenFileDialog())
-                return;
-            string path = _currentSaveFile = _dialogService.FilePath;
-            using FileStream fs = File.OpenRead(path);
-            MscSave savedState = JsonSerializer.Deserialize<MscSave>(fs) ?? throw new ArgumentNullException(nameof(savedState));
+    [ICommand]
+    private void Open()
+    {
+        if(!_dialogService.OpenFileDialog())
+            return;
+        string path = _currentSaveFile = _dialogService.FilePath;
+        using FileStream fs = File.OpenRead(path);
+        MscSave savedState = JsonSerializer.Deserialize<MscSave>(fs) ?? throw new ArgumentNullException(nameof(savedState));
 
-            History.Clear();
+        History.Clear();
 
-            foreach(string exp in savedState.History)
-                History.Add(exp);
+        foreach(string exp in savedState.History)
+            History.Add(exp);
 
-            Variables.Clear();
-            foreach(VariableModel vm in savedState.Variables)
-                Variables.Add(vm);
+        Variables.Clear();
+        foreach(VariableModel vm in savedState.Variables)
+            Variables.Add(vm);
 
-            CalcExpression = History.LastOrDefault(string.Empty);
+        CalcExpression = History.LastOrDefault(string.Empty);
 
-            From = savedState.From;
-            To = savedState.To;
-            Step = savedState.Step;
-            AnyChanges = false;
+        From = savedState.From;
+        To = savedState.To;
+        Step = savedState.Step;
+        AnyChanges = false;
 
-            Execute.Execute(null);
-        });
+        Execute();
+    }
 
-    private IRelayCommand? _saveCommand;
-    public IRelayCommand Save
-        => _saveCommand ??= CreateCommandWithTryBlock(()
-            =>
-        {
-            if(string.IsNullOrEmpty(CurrentSaveFile))
-                if(_dialogService.SaveFileDialog())
-                    CurrentSaveFile = _dialogService.FilePath;
-                else
-                    return;
-
-            SaveCurrentState();
-        });
-
-    private IRelayCommand? _saveAsCommand;
-    public IRelayCommand SaveAs
-        => _saveAsCommand ??= CreateCommandWithTryBlock(()
-            =>
-        {
+    [ICommand]
+    private void Save()
+    {
+        if(string.IsNullOrEmpty(CurrentSaveFile))
             if(_dialogService.SaveFileDialog())
                 CurrentSaveFile = _dialogService.FilePath;
             else
                 return;
 
-            SaveCurrentState();
-        });
+        SaveCurrentState();
+    }
 
-    private IRelayCommand? _exitCommand;
-    public IRelayCommand Exit
-        => _exitCommand ??= CreateCommandWithTryBlock(()
-            =>
-        {
-            if(!AnyChanges || MessageBoxResult.Yes == MessageBox.Show("Обнаружены несохранённые изменения. Всё равно закрыть", "Внимание", MessageBoxButton.YesNo, MessageBoxImage.Warning))
-                Application.Current.Shutdown();
-        });
-
-    private IRelayCommand? _clearHistoryCommand;
-    public IRelayCommand ClearHistory
-        => _clearHistoryCommand ??= CreateCommandWithTryBlock(()
-            =>
-        {
-            History.Clear();
-            AnyChanges = true;
-        });
-
-    private IRelayCommand? _showHelpCommand;
-    public IRelayCommand ShowHelp
-        => _showHelpCommand ??= CreateCommandWithTryBlock(()
-            =>
-        {
-            HelpWindow window = new();
-            window.ShowDialog();
-        });
-
-    private static RelayCommand CreateCommandWithTryBlock(Action action)
+    [ICommand]
+    private void SaveAs()
     {
-        return new RelayCommand(() =>
-        {
-            try
-            {
-                action();
-            }
-            catch
-            {
-                //empty
-            }
-        });
+        if(_dialogService.SaveFileDialog())
+            CurrentSaveFile = _dialogService.FilePath;
+        else
+            return;
+
+        SaveCurrentState();
+    }
+
+    [ICommand]
+    private void Exit()
+    {
+        if(!AnyChanges || MessageBoxResult.Yes == MessageBox.Show("Обнаружены несохранённые изменения. Всё равно закрыть", "Внимание", MessageBoxButton.YesNo, MessageBoxImage.Warning))
+            Application.Current.Shutdown();
+    }
+
+    [ICommand]
+    private void ClearHistory()
+    {
+        History.Clear();
+        AnyChanges = true;
+    }
+
+    [ICommand]
+    private void ShowHelp()
+    {
+        HelpWindow window = new();
+        window.ShowDialog();
     }
 
     private void SaveCurrentState()

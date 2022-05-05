@@ -1,5 +1,8 @@
-﻿namespace Calculation;
+﻿using NetEscapades.EnumGenerators;
 
+namespace Calculation;
+
+[EnumExtensions]
 internal enum OperationType
 {
     None,
@@ -10,26 +13,28 @@ internal enum OperationType
     Sub,
 }
 
+[EnumExtensions]
 internal enum OneArgFunctionType
 {
-    Abs,
-    Sin,
-    Cos,
-    Tan,
-    Int,
-    Rnd,
-    Exp,
-    Ln,
-    Log,
-    Sqr,
-    Sqrt,
+    abs,
+    sin,
+    cos,
+    tan,
+    intg,
+    rnd,
+    exp,
+    ln,
+    log,
+    sqr,
+    sqrt,
 }
 
+[EnumExtensions]
 internal enum TwoArgFunctionType
 {
-    Min,
-    Max,
-    Pow,
-    Rndx,
-    Logx,
+    min,
+    max,
+    pow,
+    rndx,
+    logx,
 }

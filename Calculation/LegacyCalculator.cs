@@ -60,12 +60,14 @@ public class LegacyCalculator
                     case "sin": temp = Math.Sin(Convert.ToDouble(strBetweenBrackets) / 57.2958); break;
                     case "cos": temp = Math.Cos(Convert.ToDouble(strBetweenBrackets) / 57.2958); break;
                     case "tan": temp = Math.Tan(Convert.ToDouble(strBetweenBrackets) / 57.2958); break;
-                    case "int": temp = Math.Truncate(Convert.ToDouble(strBetweenBrackets)); break;
+                    case "intg": temp = Math.Truncate(Convert.ToDouble(strBetweenBrackets)); break;
                     case "rnd": temp = Math.Round(Convert.ToDouble(strBetweenBrackets)); break;
                     case "exp": temp = Math.Exp(Convert.ToDouble(strBetweenBrackets)); break;
-                    case "ln": temp = Math.Log10(Convert.ToDouble(strBetweenBrackets)); break;
+                    case "ln": temp = Math.Log2(Convert.ToDouble(strBetweenBrackets)); break;
+                    case "log": temp = Math.Log10(Convert.ToDouble(strBetweenBrackets)); break;
                     case "sqr": temp = Math.Pow(Convert.ToDouble(strBetweenBrackets), 2); break;
                     case "sqrt": temp = Math.Sqrt(Convert.ToDouble(strBetweenBrackets)); break;
+                    default: throw new InvalidOperationException($"Not supported instruction ({mathOperation}) detected.");
                         /*кейсы с функциями
                          * frac?
                          * case "max":

@@ -19,17 +19,17 @@ internal class OneArgFunctionNode : BaseNode
         const double DegriesPerRad = 57.2958;
         Value = _function switch
         {
-            OneArgFunctionType.Abs => Math.Abs(_first.Value),
-            OneArgFunctionType.Sin => Math.Sin(_first.Value / DegriesPerRad),
-            OneArgFunctionType.Cos => Math.Cos(_first.Value / DegriesPerRad),
-            OneArgFunctionType.Tan => Math.Tan(_first.Value / DegriesPerRad),
-            OneArgFunctionType.Int => Math.Truncate(_first.Value),
-            OneArgFunctionType.Rnd => Math.Round(_first.Value),
-            OneArgFunctionType.Exp => Math.Exp(_first.Value),
-            OneArgFunctionType.Ln => Math.Log2(_first.Value),
-            OneArgFunctionType.Log => Math.Log10(_first.Value),
-            OneArgFunctionType.Sqr => Math.Pow(_first.Value, 2),
-            OneArgFunctionType.Sqrt => Math.Sqrt(_first.Value),
+            OneArgFunctionType.abs => Math.Abs(_first.Value),
+            OneArgFunctionType.sin => Math.Sin(_first.Value / DegriesPerRad),
+            OneArgFunctionType.cos => Math.Cos(_first.Value / DegriesPerRad),
+            OneArgFunctionType.tan => Math.Tan(_first.Value / DegriesPerRad),
+            OneArgFunctionType.intg => Math.Truncate(_first.Value),
+            OneArgFunctionType.rnd => Math.Round(_first.Value),
+            OneArgFunctionType.exp => Math.Exp(_first.Value),
+            OneArgFunctionType.ln => Math.Log2(_first.Value),
+            OneArgFunctionType.log => Math.Log10(_first.Value),
+            OneArgFunctionType.sqr => Math.Pow(_first.Value, 2),
+            OneArgFunctionType.sqrt => Math.Sqrt(_first.Value),
             _ => throw new InvalidOperationException("Не поддерживаемая функция")
         };
     }

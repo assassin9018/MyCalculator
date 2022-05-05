@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace Calculation;
+﻿namespace Calculation;
 
 public class SmartCalculator
 {
-    private static readonly HashSet<string> _oneArgFunctions = new(Enum.GetValues<OneArgFunctionType>().Select(x => x.ToString().ToLower()));
-    private static readonly HashSet<string> _twoArgFunctions = new(Enum.GetValues<TwoArgFunctionType>().Select(x => x.ToString().ToLower()));
     private static readonly HashSet<string> _emptyVariables = new();
     private readonly HashSet<string> _variables;
 
@@ -21,7 +15,7 @@ public class SmartCalculator
         _variables = new();
         foreach(string variable in variables)
         {
-            if(_oneArgFunctions.Contains(variable) || _twoArgFunctions.Contains(variable))
+            if(OneArgFunctionTypeExtensions.IsDefined(variable) || TwoArgFunctionTypeExtensions.IsDefined(variable))
                 throw new ArgumentException($"Could not declare variable {variable}, because there is fuction with the same name.");
             _variables.Add(variable);
         }
@@ -34,7 +28,7 @@ public class SmartCalculator
 
         IExpressionNode head = BuildTree(cleanedExpression.AsSpan());
 
-        return new TwoArgFunctionNode(head, new ValueNode(accuracy), TwoArgFunctionType.Rndx);
+        return new TwoArgFunctionNode(head, new ValueNode(accuracy), TwoArgFunctionType.rndx);
     }
 
     public double Execute(string expression, int round, Dictionary<string, IExpressionNode> variablesTrees)
@@ -125,65 +119,25 @@ public class SmartCalculator
             return new VariableNode(word);
         }
 
-        if(IsOneArgFunc(word))
+        if(OneArgFunctionTypeExtensions.TryParse(word, out var oneArgFuncType))
         {
             IExpressionNode arg = HandleBracketsPart(expressionStr[wordLength..], out int innerCount);
-            OneArgFunctionType funcType = ConvertToOneArgFuncType(word);
-            handledCharsCount = wordLength+ innerCount;
-            return new OneArgFunctionNode(arg, funcType);
+            handledCharsCount = wordLength + innerCount;
+            return new OneArgFunctionNode(arg, oneArgFuncType);
         }
 
-        if(IsTwoArgFunc(word))
+        if(TwoArgFunctionTypeExtensions.TryParse(word, out var twoArgFuncType))
         {
             (IExpressionNode firstArg, IExpressionNode secondArg) = GetTwoArgs(expressionStr[wordLength..], out int innerCount);
-            TwoArgFunctionType funcType = ConvertToTwoArgFuncType(word);
             handledCharsCount = wordLength + innerCount;
-            return new TwoArgFunctionNode(firstArg, secondArg, funcType);
+            return new TwoArgFunctionNode(firstArg, secondArg, twoArgFuncType);
         }
 
         throw new InvalidOperationException($"Not supported instruction({word}) detected!");
     }
 
-    private bool IsVariable(string word) 
+    private bool IsVariable(string word)
         => _variables.Contains(word);
-
-    private static bool IsOneArgFunc(string word)
-        => _oneArgFunctions.Contains(word);
-
-    private static bool IsTwoArgFunc(string word)
-        => _twoArgFunctions.Contains(word);
-
-    private static OneArgFunctionType ConvertToOneArgFuncType(string word)
-    {
-        return word switch
-        {
-            "abs" => OneArgFunctionType.Abs,
-            "sin" => OneArgFunctionType.Sin,
-            "cos" => OneArgFunctionType.Cos,
-            "tan" => OneArgFunctionType.Tan,
-            "int" => OneArgFunctionType.Int,
-            "rnd" => OneArgFunctionType.Rnd,
-            "exp" => OneArgFunctionType.Exp,
-            "ln" => OneArgFunctionType.Ln,
-            "log" => OneArgFunctionType.Log,
-            "sqr" => OneArgFunctionType.Sqr,
-            "sqrt" => OneArgFunctionType.Sqrt,
-            _ => throw new InvalidOperationException($"Not supported instruction({word}) detected!"),
-        };
-    }
-
-    private static TwoArgFunctionType ConvertToTwoArgFuncType(string word)
-    {
-        return word switch
-        {
-            "min" => TwoArgFunctionType.Min,
-            "max" => TwoArgFunctionType.Max,
-            "pow" => TwoArgFunctionType.Pow,
-            "rndx" => TwoArgFunctionType.Rndx,
-            "logx" => TwoArgFunctionType.Logx,
-            _ => throw new InvalidOperationException($"Not supported instruction({word}) detected!"),
-        };
-    }
 
     private static (IExpressionNode firstArg, IExpressionNode secondArg) GetTwoArgs(ReadOnlySpan<char> readOnlySpan, out int innerCount)
     {

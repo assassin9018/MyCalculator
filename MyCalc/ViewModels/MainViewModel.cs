@@ -1,4 +1,5 @@
 ﻿using Calculation;
+using Calculation.Nodes;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using MyCalc.Models;

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Calculation;
+﻿namespace Calculation.Nodes;
 
 public interface IExpressionNode
 {

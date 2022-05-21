@@ -1,4 +1,4 @@
-﻿namespace Calculation;
+﻿namespace Calculation.Nodes;
 
 internal class ArithmeticOperationNode : BaseNode
 {
@@ -8,7 +8,7 @@ internal class ArithmeticOperationNode : BaseNode
         : base(left, right)
     {
         _operation = operation;
-        if (left.IsConst & right.IsConst)
+        if(left.IsConst & right.IsConst)
             Execute();
     }
 

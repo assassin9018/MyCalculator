@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Calculation;
+﻿namespace Calculation.Nodes;
 
 internal class TwoArgFunctionNode : BaseNode
 {

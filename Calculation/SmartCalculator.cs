@@ -1,4 +1,6 @@
-﻿namespace Calculation;
+﻿using Calculation.Nodes;
+
+namespace Calculation;
 
 public class SmartCalculator
 {

@@ -1,4 +1,4 @@
-﻿namespace Calculation;
+﻿namespace Calculation.Nodes;
 
 public class VariableNode : IExpressionNode
 {

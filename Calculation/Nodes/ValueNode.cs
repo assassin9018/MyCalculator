@@ -1,10 +1,8 @@
-﻿using System.Collections.Generic;
-
-namespace Calculation;
+﻿namespace Calculation.Nodes;
 
 public class ValueNode : IExpressionNode
 {
-    public double Value { get;}
+    public double Value { get; }
 
     public bool IsConst => true;
 

@@ -1,11 +1,14 @@
 ﻿using Calculation.Nodes;
+using System.Text;
 
 namespace Calculation;
 
-public class SmartCalculator
+public class SmartCalculator : ICalculator
 {
     private static readonly HashSet<string> _emptyVariables = new();
+    private static readonly Dictionary<string, IExpressionNode> _emptyVariablesTrees = new();
     private readonly HashSet<string> _variables;
+    private readonly int _accuracy;
 
     public SmartCalculator()
     {
@@ -23,6 +26,11 @@ public class SmartCalculator
         }
     }
 
+    public SmartCalculator(IEnumerable<string> variables, int accuracy) : this(variables)
+    {
+        _accuracy = accuracy;
+    }
+
     public IExpressionNode Parse(string expression, int accuracy)
     {
         string cleanedExpression = expression.Replace(" ", "").ToLower();
@@ -31,6 +39,12 @@ public class SmartCalculator
         IExpressionNode head = BuildTree(cleanedExpression.AsSpan());
 
         return new TwoArgFunctionNode(head, new ValueNode(accuracy), TwoArgFunctionType.rndx);
+    }
+
+    public double Execute(string expression)
+{
+        IExpressionNode tree = Parse(expression, _accuracy);
+        return tree.Value;
     }
 
     public double Execute(string expression, int round, Dictionary<string, IExpressionNode> variablesTrees)

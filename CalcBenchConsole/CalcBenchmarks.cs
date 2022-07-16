@@ -1,6 +1,7 @@
 ﻿using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Jobs;
 using Calculation;
+using System.Text;
 
 namespace CalcBenchConsole;
 
@@ -9,9 +10,13 @@ namespace CalcBenchConsole;
 [RPlotExporter]
 public class CalcBenchmarks
 {
-    [Params("2*-2+2--2", "intg((((13-2)))*100*sin(45)^(1/2)+40)", "2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2",
+    [Params("2*-2+2--2", 
+        "intg((((13-2)))*100*sin(45)^(1/2)+40)", 
+        "2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2",
         "intg(abs(-50*2)*sin(45)*cos(30)+tan(70))+rnd(exp(7))+ln(32)+sqrt(sqr(log(100)))")]
     public string N;
+    private readonly ICalculator _legacy = new LegacyCalculator(0);
+    private readonly ICalculator _smart = new SmartCalculator(Array.Empty<string>());
 
     [GlobalSetup]
     public void Setup()
@@ -19,24 +24,10 @@ public class CalcBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public double RunLegacy()
-    {
-        double sum = 0;
-        var calc = new LegacyCalculator(0);
-        for(int i = 0; i < 1001; i++)
-            sum += calc.Handle(N);
-
-        return sum;
-    }
+    public double RunLegacy() 
+        => _legacy.Execute(N);
 
     [Benchmark]
-    public double RunSmart()
-    {
-        double sum = 0;
-        var calc = new SmartCalculator(Array.Empty<string>());
-        for(int i = 0; i < 1001; i++)
-            sum += calc.Execute(N, 0, new());
-
-        return sum;
-    }
+    public double RunSmart() 
+        => _smart.Execute(N);
 }

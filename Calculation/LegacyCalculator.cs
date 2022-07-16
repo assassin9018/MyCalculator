@@ -2,7 +2,7 @@
 
 namespace Calculation;
 
-public class LegacyCalculator
+public class LegacyCalculator : ICalculator
 {
     private readonly int _roundDigit;
 
@@ -179,7 +179,7 @@ public class LegacyCalculator
         return calcStr;
     }
 
-    public double Handle(string expression)
+    public double Execute(string expression)
         => double.Parse(Calculate(GetCalcStr(expression)));
 }
 

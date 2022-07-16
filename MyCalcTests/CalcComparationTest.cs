@@ -31,7 +31,7 @@ public class Tests
     [Test]
     public void PriorityTest()
     {
-        string exprassion = "log(100)^2*2+2";
+        string exprassion = "2+2*log(100)^2";
         CompareCalcs(exprassion);
         Assert.Pass();
     }
@@ -65,7 +65,7 @@ public class Tests
     {
         SmartCalculator smartCalc = new(Array.Empty<string>());
         LegacyCalculator legacyCalc = new(round);
-        double legacyResult = legacyCalc.Handle(exprassion);
+        double legacyResult = legacyCalc.Execute(exprassion);
         double smartResult = smartCalc.Execute(exprassion, round, new());
         Assert.AreEqual(legacyResult, smartResult);
     }

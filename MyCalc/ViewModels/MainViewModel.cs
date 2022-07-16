@@ -147,6 +147,7 @@ public partial class MainViewModel : ObservableObject
 
         CalcExpression = History.LastOrDefault(string.Empty);
 
+        PlotMode = savedState.PlotMode;
         From = savedState.From;
         To = savedState.To;
         Step = savedState.Step;
@@ -206,6 +207,7 @@ public partial class MainViewModel : ObservableObject
 
         MscSave currentState = new()
         {
+            PlotMode = PlotMode,
             From = From,
             To = To,
             Step = Step,

@@ -13,6 +13,14 @@ public class Tests
     }
 
     [Test]
+    public void MyCoolTest()
+    {
+        string exprassion = "1-2+5+5+5+5+5+5+5+5+5+55+52+2+21+1+4+5+5+5+4+42+5+5";
+        CompareCalcs(exprassion);
+        Assert.Pass();
+    }
+
+    [Test]
     public void MulTest()
     {
         string exprassion = "2*2";

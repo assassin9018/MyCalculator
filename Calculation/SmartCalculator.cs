@@ -33,26 +33,47 @@ public class SmartCalculator : ICalculator
 
     public IExpressionNode Parse(string expression, int accuracy)
     {
-        string cleanedExpression = expression.Replace(" ", "").ToLower();
-        ThrowIfNotValidExpression(cleanedExpression);
+        try
+        {
+            string cleanedExpression = expression.Replace(" ", "").ToLower();
+            ThrowIfNotValidExpression(cleanedExpression);
 
-        IExpressionNode head = BuildTree(cleanedExpression.AsSpan());
+            IExpressionNode head = BuildTree(cleanedExpression.AsSpan());
 
-        return new TwoArgFunctionNode(head, new ValueNode(accuracy), TwoArgFunctionType.rndx);
+            return new TwoArgFunctionNode(head, new ValueNode(accuracy), TwoArgFunctionType.rndx);
+        }
+        catch
+        {
+            return new ValueNode(0);
+        }
     }
 
     public double Execute(string expression)
-{
-        IExpressionNode tree = Parse(expression, _accuracy);
-        return tree.Value;
+    {
+        try
+        {
+            IExpressionNode tree = Parse(expression, _accuracy);
+            return tree.Value;
+        }
+        catch
+        {
+            return 0;
+        }
     }
 
     public double Execute(string expression, int round, Dictionary<string, IExpressionNode> variablesTrees)
     {
-        IExpressionNode tree = Parse(expression, round);
-        tree.Recalculate(variablesTrees);
+        try
+        {
+            IExpressionNode tree = Parse(expression, round);
+            tree.Recalculate(variablesTrees);
 
-        return tree.Value;
+            return tree.Value;
+        }
+        catch
+        {
+            return 0;
+        }
     }
 
     private IExpressionNode BuildTree(ReadOnlySpan<char> expressionStr)

@@ -1,4 +1,5 @@
 ﻿using Calculation.Nodes;
+using System.Globalization;
 using System.Text;
 
 namespace Calculation;
@@ -139,7 +140,7 @@ public class SmartCalculator : ICalculator
             length++;
 
         handledCharsCount = length;
-        return new ValueNode(double.Parse(expressionStr[..length]));
+        return new ValueNode(double.Parse(expressionStr[..length], provider: CultureInfo.InvariantCulture));
     }
 
     private IExpressionNode HandleWord(ReadOnlySpan<char> expressionStr, out int handledCharsCount)

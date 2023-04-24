@@ -1,11 +1,12 @@
 ﻿using Calculation;
 using Calculation.Nodes;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using MyCalc.Models;
 using MyCalc.Services;
 using MyCalc.Views;
 using OxyPlot;
+using OxyPlot.Axes;
 using OxyPlot.Series;
 using System;
 using System.Collections.Generic;
@@ -65,7 +66,6 @@ public partial class MainViewModel : ObservableObject
         if(Step <= 0)
             throw new ArgumentException("Step should be more than 0.");
 
-
         List<string> realVariableNames = new();
         foreach(var variable in Variables.Where(x => string.IsNullOrEmpty(x.Expression)))
         {
@@ -90,7 +90,7 @@ public partial class MainViewModel : ObservableObject
         Plot.Series.Add(series);
     }
 
-    [ICommand]
+    [RelayCommand]
     private void Execute()
     {
         double result = 0;
@@ -112,7 +112,7 @@ public partial class MainViewModel : ObservableObject
             History.Add(CalcExpression);
     }
 
-    [ICommand]
+    [RelayCommand]
     private void AddVariable()
     {
         VariableModel model = new();
@@ -120,14 +120,14 @@ public partial class MainViewModel : ObservableObject
         SelectedVariable = model;
     }
 
-    [ICommand]
+    [RelayCommand]
     private void RemoveVariable()
     {
         if(SelectedVariable is not null)
             Variables.Remove(SelectedVariable);
     }
 
-    [ICommand]
+    [RelayCommand]
     private void Open()
     {
         if(!_dialogService.OpenFileDialog())
@@ -156,7 +156,7 @@ public partial class MainViewModel : ObservableObject
         Execute();
     }
 
-    [ICommand]
+    [RelayCommand]
     private void Save()
     {
         if(string.IsNullOrEmpty(CurrentSaveFile))
@@ -168,7 +168,7 @@ public partial class MainViewModel : ObservableObject
         SaveCurrentState();
     }
 
-    [ICommand]
+    [RelayCommand]
     private void SaveAs()
     {
         if(_dialogService.SaveFileDialog())
@@ -179,21 +179,21 @@ public partial class MainViewModel : ObservableObject
         SaveCurrentState();
     }
 
-    [ICommand]
+    [RelayCommand]
     private void Exit()
     {
         if(!AnyChanges || MessageBoxResult.Yes == MessageBox.Show("Обнаружены несохранённые изменения. Всё равно закрыть", "Внимание", MessageBoxButton.YesNo, MessageBoxImage.Warning))
             Application.Current.Shutdown();
     }
 
-    [ICommand]
+    [RelayCommand]
     private void ClearHistory()
     {
         History.Clear();
         AnyChanges = true;
     }
 
-    [ICommand]
+    [RelayCommand]
     private void ShowHelp()
     {
         HelpWindow window = new();

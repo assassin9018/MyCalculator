@@ -67,7 +67,7 @@ public partial class MainViewModel : ObservableObject
             throw new ArgumentException("Step should be more than 0.");
 
         List<string> realVariableNames = new();
-        foreach(var variable in Variables.Where(x => string.IsNullOrEmpty(x.Expression)))
+        foreach(var variable in Variables.Where(x => !string.IsNullOrWhiteSpace(x.Name)).Where(x => string.IsNullOrEmpty(x.Expression)))
         {
             string name = variable.Name;
             variablesTrees.Add(name, new VariableNode(name));

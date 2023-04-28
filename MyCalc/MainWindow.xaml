@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MyCalc"
-        xmlns:models="clr-namespace:MyCalc.Models"
+        xmlns:models="clr-namespace:CalcAppShared.Models"
         xmlns:vms="clr-namespace:MyCalc.ViewModels"
         xmlns:oxy="http://oxyplot.org/wpf"
         mc:Ignorable="d"

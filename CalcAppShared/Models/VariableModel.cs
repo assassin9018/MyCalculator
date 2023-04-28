@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace MyCalc.Models;
+namespace CalcAppShared.Models;
 
 public partial class VariableModel : ObservableObject
 {

@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using CalcAppShared.Services;
+using Microsoft.Win32;
 using System;
 using System.Windows;
 
@@ -6,28 +7,36 @@ namespace MyCalc.Services;
 
 internal class DialogService : IDialogService
 {
-    public string FilePath { get; set; } = String.Empty;
+    private const MessageBoxButton AgreementButtons = MessageBoxButton.YesNo;
+    private const MessageBoxImage AgreementIcon = MessageBoxImage.Warning;
 
-    public bool OpenFileDialog()
+    public bool OpenFileDialog(out string? path)
     {
+        path = null;
         OpenFileDialog openFileDialog = new();
         if(openFileDialog.ShowDialog() == true)
         {
-            FilePath = openFileDialog.FileName;
+            path = openFileDialog.FileName;
             return true;
         }
         return false;
     }
 
-    public bool SaveFileDialog()
+    public bool SaveFileDialog(out string? path)
     {
+        path = null;
         SaveFileDialog saveFileDialog = new();
         if(saveFileDialog.ShowDialog() == true)
         {
-            FilePath = saveFileDialog.FileName;
+            path = saveFileDialog.FileName;
             return true;
         }
         return false;
+    }
+
+    public bool ShowAgreementForm(string message, string tittle)
+    {
+        return MessageBoxResult.Yes == MessageBox.Show(message, tittle, AgreementButtons, AgreementIcon);
     }
 
     public void ShowMessage(string message)

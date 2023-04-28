@@ -4,6 +4,7 @@ using MyCalc.ViewModels;
 using System;
 using System.Windows;
 using MyCalc.Services;
+using CalcAppShared.Services;
 
 namespace MyCalc;
 /// <summary>

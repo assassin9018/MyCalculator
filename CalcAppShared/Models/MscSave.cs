@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace MyCalc.Models;
+﻿namespace CalcAppShared.Models;
 
 internal class MscSave
 {

@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyCalcTests", "MyCalcTests\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Calculation", "Calculation\Calculation.csproj", "{6487B84C-8143-4611-9EB9-383B5BFDAD26}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalcBenchConsole", "CalcBenchConsole\CalcBenchConsole.csproj", "{D5F280ED-2E2B-4EAA-A84F-627A0CA5E8C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CalcBenchConsole", "CalcBenchConsole\CalcBenchConsole.csproj", "{D5F280ED-2E2B-4EAA-A84F-627A0CA5E8C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalcAppShared", "CalcAppShared\CalcAppShared.csproj", "{2574C6D8-426A-44F0-9CB0-C9AAE3F3A523}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{D5F280ED-2E2B-4EAA-A84F-627A0CA5E8C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D5F280ED-2E2B-4EAA-A84F-627A0CA5E8C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D5F280ED-2E2B-4EAA-A84F-627A0CA5E8C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2574C6D8-426A-44F0-9CB0-C9AAE3F3A523}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2574C6D8-426A-44F0-9CB0-C9AAE3F3A523}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2574C6D8-426A-44F0-9CB0-C9AAE3F3A523}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2574C6D8-426A-44F0-9CB0-C9AAE3F3A523}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

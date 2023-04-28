@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:models="CalcAppShared.Models"
+             xmlns:vms="MauiCalc.ViewModels"
+             x:Class="MauiCalc.MainPage">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <!--<Menu Grid.Row="0">
+                <MenuItem Header="Файл">
+                    <MenuItem Command="{Binding OpenCommand}" Header="Открыть"/>
+                    <MenuItem Command="{Binding SaveCommand}" Header="Сохранить"/>
+                    <MenuItem Command="{Binding SaveAsCommand}" Header="Сохранить как"/>
+                    <MenuItem Command="{Binding ExitCommand}" Header="Выход"/>
+                </MenuItem>
+                <MenuItem Header="Сервис">
+                    <MenuItem Command="{Binding ClearHistoryCommand}" Header="Очистить историю"/>
+                </MenuItem>
+                <MenuItem Command="{Binding ShowHelpCommand}" Header="Справка"/>
+            </Menu>-->
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid Background="{AppThemeBinding Light={StaticResource LightGradientStyle}, Dark={StaticResource Primary}}" Grid.Row="1" Margin="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <StackLayout Orientation="Vertical" Margin="10,10,10,0" Grid.Row="0">
+                    <!--SelectedItem="{Binding Text, Source={x:Reference tbExpresion}, Mode=TwoWay}"-->
+                    <Picker ItemsSource="{Binding History}" HorizontalOptions="StartAndExpand" MinimumWidthRequest="200" Margin="5"/>
+                    <Grid Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="4*"/>
+                            <ColumnDefinition Width="30"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+                        <Entry Grid.Column="0" x:Name="tbExpresion" Text="{Binding CalcExpression, Mode=TwoWay}" ReturnCommand="{Binding ExecuteCommand}"/>
+                        <Label Grid.Column="1" Text="=" VerticalOptions="Center" HorizontalOptions="Center"/>
+                        <Entry Grid.Column="2" Text="{Binding Answer, Mode=TwoWay}" IsReadOnly="True"/>
+                    </Grid>
+                    <Grid Margin="5" HeightRequest="50">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Text="Выполнить" Grid.Column="0" Command="{Binding ExecuteCommand}"/>
+                        <HorizontalStackLayout Grid.Column="1" Grid.ColumnSpan="2">
+                            <CheckBox x:Name="BuildPlot" IsChecked="{Binding PlotMode}" Margin="10,0,-10,0" VerticalOptions="Center"/>
+                            <Label Text="Режим построения графиков" VerticalOptions="Center"/>
+                        </HorizontalStackLayout>
+                        <Picker Grid.Column="3" x:Name="Accuracy" ItemsSource="{Binding AvailableAccuracy}" SelectedItem="{Binding RoundAccuracy, Mode=TwoWay}" HorizontalOptions="End"/>
+                    </Grid>
+                </StackLayout>
+
+                <Grid Grid.Row="1" Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="25"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Button Text="Добавить" Command="{Binding AddVariableCommand}" Grid.Column="0" Margin="5,0,5,0"/>
+                        <Button Text="Удалить" Command="{Binding RemoveVariableCommand}" Grid.Column="1" Margin="5,0,5,0"/>
+                    </Grid>
+                    <Grid Grid.Row="1" Margin="10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="200"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0" HorizontalOptions="FillAndExpand">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid Grid.Row="0" HorizontalOptions="FillAndExpand" Margin="0,0,0,5" IsVisible="{Binding IsChecked, Converter={StaticResource BooleanToVisibilityConverter}, Source=BuildPlot}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="15"/>
+                                    <RowDefinition Height="20"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Label Text="От" Grid.Column="0" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" Margin="10,0,0,0"/>
+                                <Entry Margin="2,0,2,0" Grid.Row="1" Grid.Column="0" Text="{Binding From, Mode=TwoWay}"/>
+
+                                <Label Text="До" Grid.Column="1" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" Margin="10,0,0,0"/>
+                                <Entry Margin="2,0,2,0" Grid.Row="1" Grid.Column="1" Text="{Binding To, Mode=TwoWay}"/>
+
+                                <Label Text="Шаг" Grid.Column="2" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" Margin="10,0,0,0"/>
+                                <Entry Margin="2,0,2,0" Grid.Row="1" Grid.Column="2" Text="{Binding Step, Mode=TwoWay}"/>
+                            </Grid>
+                            <ListView HorizontalScrollBarVisibility="Never"
+                          SelectedItem="{Binding SelectedVariable, Mode=TwoWay}"
+                          ItemTemplate="{StaticResource VariableTemplate}"
+                          HorizontalOptions="FillAndExpand"  
+                          ItemsSource="{Binding Variables}"
+                          Grid.Row="1"/>
+                        </Grid>
+
+                        <!--<GridSplitter Grid.Column="1" ResizeDirection="Columns" ShowsPreview="False" Width="3" HorizontalAlignment="Center" VerticalAlignment="Stretch"/>-->
+
+                        <!--<oxy:PlotView Model="{Binding Plot}" Grid.Column="2" />-->
+                        <!--Visibility="{Binding IsChecked, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=BuildPlot}"-->
+                    </Grid>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Grid>
+
+</ContentPage>

@@ -53,30 +53,21 @@ public class LegacyCalculator : ICalculator
                 str = str.Remove(startWord, lastFuncBracket - startWord + 1);
                 if(mathOperation != "pow")// заменить на (если > 1 аргумента, то вычислить n параметров функции, и затем вызвать нужную)
                     strBetweenBrackets = Calculate(strBetweenBrackets);
-                double temp = 0;
-                switch(mathOperation)
+                double temp = mathOperation switch
                 {
-                    case "abs": temp = Math.Abs(Convert.ToDouble(strBetweenBrackets)); break;
-                    case "sin": temp = Math.Sin(Convert.ToDouble(strBetweenBrackets) / 57.2958); break;
-                    case "cos": temp = Math.Cos(Convert.ToDouble(strBetweenBrackets) / 57.2958); break;
-                    case "tan": temp = Math.Tan(Convert.ToDouble(strBetweenBrackets) / 57.2958); break;
-                    case "intg": temp = Math.Truncate(Convert.ToDouble(strBetweenBrackets)); break;
-                    case "rnd": temp = Math.Round(Convert.ToDouble(strBetweenBrackets)); break;
-                    case "exp": temp = Math.Exp(Convert.ToDouble(strBetweenBrackets)); break;
-                    case "ln": temp = Math.Log2(Convert.ToDouble(strBetweenBrackets)); break;
-                    case "log": temp = Math.Log10(Convert.ToDouble(strBetweenBrackets)); break;
-                    case "sqr": temp = Math.Pow(Convert.ToDouble(strBetweenBrackets), 2); break;
-                    case "sqrt": temp = Math.Sqrt(Convert.ToDouble(strBetweenBrackets)); break;
-                    default: throw new InvalidOperationException($"Not supported instruction ({mathOperation}) detected.");
-                        /*кейсы с функциями
-                         * frac?
-                         * case "max":
-                         * case "min":
-                         * case "pow":
-                         * case "pow":
-                         * case "log":
-                          */
-                }
+                    "abs" => Math.Abs(Convert.ToDouble(strBetweenBrackets)),
+                    "sin" => Math.Sin(Convert.ToDouble(strBetweenBrackets) / 57.2958),
+                    "cos" => Math.Cos(Convert.ToDouble(strBetweenBrackets) / 57.2958),
+                    "tan" => Math.Tan(Convert.ToDouble(strBetweenBrackets) / 57.2958),
+                    "intg" => Math.Truncate(Convert.ToDouble(strBetweenBrackets)),
+                    "rnd" => Math.Round(Convert.ToDouble(strBetweenBrackets)),
+                    "exp" => Math.Exp(Convert.ToDouble(strBetweenBrackets)),
+                    "ln" => Math.Log(Convert.ToDouble(strBetweenBrackets)),
+                    "log" => Math.Log10(Convert.ToDouble(strBetweenBrackets)),
+                    "sqr" => Math.Pow(Convert.ToDouble(strBetweenBrackets), 2),
+                    "sqrt" => Math.Sqrt(Convert.ToDouble(strBetweenBrackets)),
+                    _ => throw new InvalidOperationException($"Not supported instruction ({mathOperation}) detected."),
+                };
                 string result = Convert.ToString(Math.Round(temp, _roundDigit));
                 str = str.Insert(startWord, result);
             }

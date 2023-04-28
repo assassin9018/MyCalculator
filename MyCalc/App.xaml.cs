@@ -5,6 +5,7 @@ using System;
 using System.Windows;
 using MyCalc.Services;
 using CalcAppShared.Services;
+using CalcAppShared.DependencyInjection;
 
 namespace MyCalc;
 /// <summary>
@@ -31,6 +32,7 @@ public partial class App : Application
 
     private static void ConfigureServices(ServiceCollection services)
     {
+        services.AddSmartCalc();
         services.AddSingleton<IDialogService, DialogService>();
         services.AddSingleton<MainViewModel>();
         services.AddSingleton<MainWindow>();
@@ -38,7 +40,7 @@ public partial class App : Application
 
     private void OnStartup(object sender, StartupEventArgs e)
     {
-        var mainWindow = _serviceProvider.GetService<MainWindow>() ?? throw new NullReferenceException("Exception on dependency injection!");
+        var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
         mainWindow.Show();
     }
 }

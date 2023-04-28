@@ -20,6 +20,7 @@ public static class MauiProgram
             });
 
         var services = builder.Services;
+        services.AddSmartCalc();
 
         services.AddSingleton<MainPage>();
         services.AddSingleton<MainViewModel>();

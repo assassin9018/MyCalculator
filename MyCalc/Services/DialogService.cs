@@ -1,6 +1,5 @@
 ﻿using CalcAppShared.Services;
 using Microsoft.Win32;
-using System;
 using System.Windows;
 
 namespace MyCalc.Services;

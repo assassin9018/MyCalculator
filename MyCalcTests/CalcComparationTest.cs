@@ -1,5 +1,6 @@
 using Calculation;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using System;
 using System.Linq;
 
@@ -67,6 +68,6 @@ public class Tests
         LegacyCalculator legacyCalc = new(round);
         double legacyResult = legacyCalc.Execute(exprassion);
         double smartResult = smartCalc.Execute(exprassion, round, new());
-        Assert.AreEqual(legacyResult, smartResult);
+        ClassicAssert.AreEqual(legacyResult, smartResult);
     }
 }

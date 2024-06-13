@@ -1,4 +1,6 @@
 using Calculation;
+using Calculation.Legacy;
+using Calculation.Smart;
 using NUnit.Framework;
 using System;
 using System.Linq;
@@ -29,7 +31,15 @@ public class Tests
     }
 
     [Test]
-    public void PriorityTest()
+    public void ArithmeticPriorityTest()
+    {
+        string exprassion = "2+2*2";
+        CompareCalcs(exprassion);
+        Assert.Pass();
+    }
+
+    [Test]
+    public void FunctionPriorityTest()
     {
         string exprassion = "2+2*log(100)^2";
         CompareCalcs(exprassion);

@@ -1,6 +1,8 @@
 ﻿using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Jobs;
 using Calculation;
+using Calculation.Legacy;
+using Calculation.Smart;
 using System.Text;
 
 namespace CalcBenchConsole;

@@ -1,12 +1,11 @@
-﻿using Calculation;
-using Calculation.Nodes;
+﻿using Calculation.Smart;
+using Calculation.Smart.Nodes;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MyCalc.Models;
 using MyCalc.Services;
 using MyCalc.Views;
 using OxyPlot;
-using OxyPlot.Axes;
 using OxyPlot.Series;
 using System;
 using System.Collections.Generic;

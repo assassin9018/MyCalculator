@@ -7,7 +7,7 @@ using Calculation.Smart;
 namespace CalcBenchConsole;
 
 [MemoryDiagnoser]
-[SimpleJob(RuntimeMoniker.Net80, baseline: true)]
+[SimpleJob(RuntimeMoniker.Net80)]
 [SimpleJob(RuntimeMoniker.Net90, baseline: true)]
 [RPlotExporter]
 public class CalcBenchmarks

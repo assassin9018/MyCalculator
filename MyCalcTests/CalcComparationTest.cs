@@ -77,6 +77,6 @@ public class Tests
         LegacyCalculator legacyCalc = new(round);
         double legacyResult = legacyCalc.Execute(exprassion);
         double smartResult = smartCalc.Execute(exprassion, round, new());
-        Assert.AreEqual(legacyResult, smartResult);
+        Assert.That(legacyResult.Equals(smartResult));
     }
 }

@@ -65,7 +65,7 @@ public partial class MainViewModel : ObservableObject
         if(Step <= 0)
             throw new ArgumentException("Step should be more than 0.");
 
-        List<string> realVariableNames = new();
+        List<string> realVariableNames = [];
         foreach(var variable in Variables.Where(x => !string.IsNullOrWhiteSpace(x.Name)).Where(x => string.IsNullOrEmpty(x.Expression)))
         {
             string name = variable.Name;
@@ -96,9 +96,11 @@ public partial class MainViewModel : ObservableObject
 
         SmartCalculator calc = new(Variables.Select(x => x.Name));
 
-        var variablesTrees = Variables
-            .Where(x => !string.IsNullOrEmpty(x.Expression))
-            .ToDictionary(key => key.Name, value => calc.Parse(value.Expression, RoundAccuracy));
+        //todo Переработать API. Формирование структуры данных, это обязанность библиотеки, а не потребителя
+
+        var variablesTrees = new Dictionary<string, IExpressionNode>(StringComparer.OrdinalIgnoreCase); 
+        foreach(var variable in Variables.Where(x => !string.IsNullOrEmpty(x.Expression)))
+            variablesTrees.Add(variable.Name, calc.Parse(variable.Expression, RoundAccuracy));
 
         if(PlotMode)
             BuildPlot(calc, variablesTrees);

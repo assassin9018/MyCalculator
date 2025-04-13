@@ -5,7 +5,7 @@ namespace Calculation.Smart;
 
 public class SmartCalculator : ICalculator
 {
-    private static readonly HashSet<string> _emptyVariables = new();
+    private static readonly HashSet<string> _emptyVariables = new(StringComparer.OrdinalIgnoreCase);
     private readonly HashSet<string> _variables;
 
     public SmartCalculator()
@@ -15,7 +15,7 @@ public class SmartCalculator : ICalculator
 
     public SmartCalculator(IEnumerable<string> variables)
     {
-        _variables = new();
+        _variables = new(StringComparer.OrdinalIgnoreCase);
         foreach(string variable in variables)
         {
             if(OneArgFunctionTypeExtensions.IsDefined(variable) || TwoArgFunctionTypeExtensions.IsDefined(variable))

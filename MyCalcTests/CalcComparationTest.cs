@@ -73,10 +73,10 @@ public class Tests
 
     private static void CompareCalcs(string exprassion, int round = 0)
     {
-        SmartCalculator smartCalc = new(Array.Empty<string>());
+        SmartCalculator smartCalc = new([]);
         LegacyCalculator legacyCalc = new(round);
         double legacyResult = legacyCalc.Execute(exprassion);
-        double smartResult = smartCalc.Execute(exprassion, round, new());
+        double smartResult = smartCalc.Execute(exprassion, round, []);
         Assert.That(legacyResult.Equals(smartResult));
     }
 }

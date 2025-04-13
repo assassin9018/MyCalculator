@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net9.0-windows</TargetFramework>
+		<UseWPF>true</UseWPF>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Resource Include="Assets\AppIco.ico">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="CommunityToolkit.Mvvm" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection"  />
+		<PackageReference Include="OxyPlot.Wpf"  />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\CalcAppShared\CalcAppShared.csproj" />
+		<ProjectReference Include="..\Calculation\Calculation.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="Assets\help_ru.rtf">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+</Project>

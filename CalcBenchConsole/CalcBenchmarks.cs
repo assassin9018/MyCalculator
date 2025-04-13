@@ -1,22 +1,37 @@
 ﻿using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Jobs;
-using Calculation;
-using System.Text;
+using NFun;
+using Calculation.Legacy;
+using Calculation.Smart;
 
 namespace CalcBenchConsole;
 
 [MemoryDiagnoser]
-[SimpleJob(RuntimeMoniker.Net60, baseline: true)]
+[SimpleJob(RuntimeMoniker.Net80)]
+[SimpleJob(RuntimeMoniker.Net90, baseline: true)]
 [RPlotExporter]
 public class CalcBenchmarks
 {
-    [Params("2*-2+2--2", 
-        "intg((((13-2)))*100*sin(45)^(1/2)+40)", 
-        "2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2",
-        "intg(abs(-50*2)*sin(45)*cos(30)+tan(70))+rnd(exp(7))+ln(32)+sqrt(sqr(log(100)))")]
+    private const string PriorityCase = PriorityCaseExp;
+    private const string PriorityCaseExp = "2+2*2^3*2+2^1";
+    private const string PriorityCaseExpNfan = "2+2*2**3*2+2**1";
+
+    [Params(
+        "10",
+        "1+1+1",
+        PriorityCase,
+        "2*-2+2+2+2+2+2+2+2-2-2-2-2-2*2*2*2*2*22-110012154+123456789",
+        "2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2",
+        "abs(abs(-50*2)*sin(45)*100*cos(30)*100+tan(70))*100+sin(exp(7))*100+log(32)*100+sqrt(2*(log(100)))*100+" +
+        "abs(abs(-50*2)*sin(45)*100*cos(30)*100+tan(70))*100+sin(exp(7))*100+log(32)*100+sqrt(2*(log(100)))*100+" +
+        "abs(abs(-50*2)*sin(45)*100*cos(30)*100+tan(70))*100+sin(exp(7))*100+log(32)*100+sqrt(2*(log(100)))*100+" +
+        "abs(abs(-50*2)*sin(45)*100*cos(30)*100+tan(70))*100+sin(exp(7))*100+log(32)*100+sqrt(2*(log(100)))*100+" +
+        "abs(abs(-50*2)*sin(45)*100*cos(30)*100+tan(70))*100+sin(exp(7))*100+log(32)*100+sqrt(2*(log(100)))*100+" +
+        "abs(abs(-50*2)*sin(45)*100*cos(30)*100+tan(70))*100+sin(exp(7))*100+log(32)*100+sqrt(2*(log(100)))*100")]
     public string N;
-    private readonly ICalculator _legacy = new LegacyCalculator(0);
-    private readonly ICalculator _smart = new SmartCalculator(Array.Empty<string>());
+
+    private static readonly LegacyCalculator _legacy = new LegacyCalculator(5);
+    private static readonly SmartCalculator _smart = new SmartCalculator(Array.Empty<string>());
 
     [GlobalSetup]
     public void Setup()
@@ -24,10 +39,23 @@ public class CalcBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public double RunLegacy() 
-        => _legacy.Execute(N);
+    public double Legacy()
+    {
+        var exp = N == PriorityCase ? PriorityCaseExp : N;
+        return _legacy.Execute(exp);
+    }
 
     [Benchmark]
-    public double RunSmart() 
-        => _smart.Execute(N);
+    public double Smart()
+    {
+        var exp = N == PriorityCase ? PriorityCaseExp : N;
+        return _smart.Execute(exp);
+    }
+
+    [Benchmark]
+    public double Nfan()
+    {
+        var exp = N == PriorityCase ? PriorityCaseExpNfan : N;
+        return Funny.Calc<double>(exp);
+    }
 }

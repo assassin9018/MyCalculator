@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Calculation;
+﻿namespace Calculation.Legacy;
 
 public class LegacyCalculator : ICalculator
 {
@@ -173,27 +171,3 @@ public class LegacyCalculator : ICalculator
     public double Execute(string expression)
         => double.Parse(Calculate(GetCalcStr(expression)));
 }
-
-/*
-    private static int FindArithmeticSymbolIndex(string str, int i, int currentPriority)
-    {
-        switch(currentPriority)
-        {
-            case 0:
-                while((str[i] != '^') && (i < str.Length - 1))
-                    i++;
-                break;
-            case 1:
-                while((str[i] != '*') && (str[i] != '/') && (i < str.Length - 1))
-                    i++;
-                break;
-            case 2:
-                while((str[i] != '+') && (str[i] != '-') && (i < str.Length - 1) || ((i == 0)))
-                    i++;
-                break;
-            default: 
-                return -1;
-        }
-
-        return --i;
-    }*/

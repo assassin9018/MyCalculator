@@ -1,15 +1,12 @@
-﻿using Calculation.Nodes;
+﻿using Calculation.Smart.Nodes;
 using System.Globalization;
-using System.Text;
 
-namespace Calculation;
+namespace Calculation.Smart;
 
 public class SmartCalculator : ICalculator
 {
-    private static readonly HashSet<string> _emptyVariables = new();
-    private static readonly Dictionary<string, IExpressionNode> _emptyVariablesTrees = new();
+    private static readonly HashSet<string> _emptyVariables = new(StringComparer.OrdinalIgnoreCase);
     private readonly HashSet<string> _variables;
-    private readonly int _accuracy;
 
     public SmartCalculator()
     {
@@ -18,21 +15,16 @@ public class SmartCalculator : ICalculator
 
     public SmartCalculator(IEnumerable<string> variables)
     {
-        _variables = new();
+        _variables = new(StringComparer.OrdinalIgnoreCase);
         foreach(string variable in variables)
         {
             if(OneArgFunctionTypeExtensions.IsDefined(variable) || TwoArgFunctionTypeExtensions.IsDefined(variable))
-                throw new ArgumentException($"Could not declare variable {variable}, because there is fuction with the same name.");
+                throw new ArgumentException($"Could not declare variable {variable}, because there is function with the same name.");
             _variables.Add(variable);
         }
     }
 
-    public SmartCalculator(IEnumerable<string> variables, int accuracy) : this(variables)
-    {
-        _accuracy = accuracy;
-    }
-
-    public IExpressionNode Parse(string expression, int accuracy)
+    public IExpressionNode Parse(string expression, int? accuracy)
     {
         try
         {
@@ -41,7 +33,9 @@ public class SmartCalculator : ICalculator
 
             IExpressionNode head = BuildTree(cleanedExpression.AsSpan());
 
-            return new TwoArgFunctionNode(head, new ValueNode(accuracy), TwoArgFunctionType.rndx);
+            return accuracy is null 
+                ? head 
+                : new TwoArgFunctionNode(head, new ValueNode(accuracy.Value), TwoArgFunctionType.rndx);
         }
         catch
         {
@@ -53,7 +47,7 @@ public class SmartCalculator : ICalculator
     {
         try
         {
-            IExpressionNode tree = Parse(expression, _accuracy);
+            IExpressionNode tree = Parse(expression, 6);
             return tree.Value;
         }
         catch
@@ -217,13 +211,13 @@ public class SmartCalculator : ICalculator
 
         return nodeWithOperations[0].value;
 
-        static bool ExpSelector(OperationType operation) => operation == OperationType.Exp;
-        static bool MulDivSelector(OperationType operation) => operation == OperationType.Mul || operation == OperationType.Div;
-        static bool AddSubSelector(OperationType operation) => operation == OperationType.Add || operation == OperationType.Sub;
+        static bool ExpSelector(OperationType operation) => operation is OperationType.Exp;
+        static bool MulDivSelector(OperationType operation) => operation is OperationType.Mul or OperationType.Div;
+        static bool AddSubSelector(OperationType operation) => operation is OperationType.Add or OperationType.Sub;
 
         static void CombineSelectedOperations(List<(OperationType operation, IExpressionNode value)> nodeWithOperations, Func<OperationType, bool> selector)
         {
-            for(int i = 0; i < nodeWithOperations.Count; i++)//делим и умножаем
+            for(int i = 0; i < nodeWithOperations.Count; i++)
             {
                 var (operation, value) = nodeWithOperations[i];
                 if(selector(operation))

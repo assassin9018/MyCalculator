@@ -1,4 +1,6 @@
 using Calculation;
+using Calculation.Legacy;
+using Calculation.Smart;
 using NUnit.Framework;
 using NUnit.Framework.Legacy;
 using System;
@@ -30,7 +32,15 @@ public class Tests
     }
 
     [Test]
-    public void PriorityTest()
+    public void ArithmeticPriorityTest()
+    {
+        string exprassion = "2+2*2";
+        CompareCalcs(exprassion);
+        Assert.Pass();
+    }
+
+    [Test]
+    public void FunctionPriorityTest()
     {
         string exprassion = "2+2*log(100)^2";
         CompareCalcs(exprassion);
@@ -64,10 +74,10 @@ public class Tests
 
     private static void CompareCalcs(string exprassion, int round = 0)
     {
-        SmartCalculator smartCalc = new(Array.Empty<string>());
+        SmartCalculator smartCalc = new([]);
         LegacyCalculator legacyCalc = new(round);
         double legacyResult = legacyCalc.Execute(exprassion);
-        double smartResult = smartCalc.Execute(exprassion, round, new());
-        ClassicAssert.AreEqual(legacyResult, smartResult);
+        double smartResult = smartCalc.Execute(exprassion, round, []);
+        Assert.That(legacyResult.Equals(smartResult));
     }
 }

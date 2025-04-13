@@ -1,4 +1,4 @@
-﻿namespace Calculation.Nodes;
+﻿namespace Calculation.Smart.Nodes;
 
 public interface IExpressionNode
 {

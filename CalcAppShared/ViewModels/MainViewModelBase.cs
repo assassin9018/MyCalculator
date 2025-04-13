@@ -1,12 +1,12 @@
-﻿using Calculation;
-using Calculation.Nodes;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CalcAppShared.Models;
 using CalcAppShared.Services;
 using System.Collections.ObjectModel;
 using System.Text.Json;
 using System.Drawing;
+using Calculation.Smart.Nodes;
+using Calculation.Smart;
 
 namespace CalcAppShared.ViewModels;
 

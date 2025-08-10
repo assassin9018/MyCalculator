@@ -19,16 +19,16 @@ string[] values = [
 
 foreach ( var value in values )
 {
-    var leg = new LegacyCalculator(6).Execute(value);
-    var sm = new SmartCalculator().Execute(value);
+    _ = new LegacyCalculator(6).Execute(value);
+    _ = new SmartCalculator().Execute(value);
     if(value == "1")
     {
-        var n = Funny.Calc<double>("abs(((((((((((((13-2))))))))))))*100*sin(45)**(1/2/2/2/2/2/2)+40)");
+        _ = Funny.Calc<double>("abs(((((((((((((13-2))))))))))))*100*sin(45)**(1/2/2/2/2/2/2)+40)");
     }
     else
     {
-        var n = Funny.Calc<double>(value);
+        _ = Funny.Calc<double>(value);
     }
 }
 
-var summary = BenchmarkRunner.Run<CalcBenchmarks>();
+_ = BenchmarkRunner.Run<CalcBenchmarks>();

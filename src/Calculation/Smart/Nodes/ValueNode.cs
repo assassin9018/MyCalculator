@@ -1,15 +1,10 @@
 ﻿namespace Calculation.Smart.Nodes;
 
-public class ValueNode : IExpressionNode
+public class ValueNode(double value) : IExpressionNode
 {
-    public double Value { get; }
+    public double Value { get; } = value;
 
     public bool IsConst => true;
-
-    public ValueNode(double value)
-    {
-        Value = value;
-    }
 
     public void Recalculate(Dictionary<string, IExpressionNode> keyValues)
     {

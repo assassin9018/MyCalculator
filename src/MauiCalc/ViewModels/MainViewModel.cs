@@ -3,7 +3,7 @@ using CalcAppShared.ViewModels;
 
 namespace MauiCalc.ViewModels;
 
-public class MainViewModel : MainViewModelBase
+public partial class MainViewModel : MainViewModelBase
 {
     //[ObservableProperty]
     //private PlotModel _plot = new();
@@ -25,7 +25,7 @@ public class MainViewModel : MainViewModelBase
         //Plot.Series.Add(series);
     }
 
-    protected override void ShutDown() => Application.Current.Quit();
+    protected override void ShutDown() => Application.Current?.Quit();
     protected override void ShowReadMe()
     {
         //HelpWindow window = new();

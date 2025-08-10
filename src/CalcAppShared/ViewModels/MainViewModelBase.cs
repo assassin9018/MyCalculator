@@ -10,10 +10,8 @@ using Calculation.Smart;
 
 namespace CalcAppShared.ViewModels;
 
-public abstract partial class MainViewModelBase : ObservableObject
+public abstract partial class MainViewModelBase(IDialogService dialogService) : ObservableObject
 {
-    private readonly IDialogService _dialogService;
-
     [ObservableProperty]
     private string _calcExpression = string.Empty;
     [ObservableProperty]
@@ -35,14 +33,9 @@ public abstract partial class MainViewModelBase : ObservableObject
     [ObservableProperty]
     private bool _anyChanges = false;
 
-    public ObservableCollection<int> AvailableAccuracy { get; set; } = new(new[] { 0, 1, 2, 3, 4, 5, 6 });
-    public ObservableCollection<VariableModel> Variables { get; set; } = new();
-    public ObservableCollection<string> History { get; set; } = new();
-
-    public MainViewModelBase(IDialogService dialogService)
-    {
-        _dialogService = dialogService;
-    }
+    public ObservableCollection<int> AvailableAccuracy { get; set; } = new([0, 1, 2, 3, 4, 5, 6]);
+    public ObservableCollection<VariableModel> Variables { get; set; } = [];
+    public ObservableCollection<string> History { get; set; } = [];
 
     private IEnumerable<PointF> BuildPlot(SmartCalculator calc, Dictionary<string, IExpressionNode> variablesTrees)
     {
@@ -51,7 +44,7 @@ public abstract partial class MainViewModelBase : ObservableObject
         if(Step <= 0)
             throw new ArgumentException("Step should be more than 0.");
 
-        List<string> realVariableNames = new();
+        List<string> realVariableNames = [];
         foreach(var variable in Variables.Where(x => !string.IsNullOrWhiteSpace(x.Name)).Where(x => string.IsNullOrEmpty(x.Expression)))
         {
             string name = variable.Name;
@@ -116,7 +109,7 @@ public abstract partial class MainViewModelBase : ObservableObject
     [RelayCommand]
     private void Open()
     {
-        if(!_dialogService.OpenFileDialog(out var filePath))
+        if(!dialogService.OpenFileDialog(out var filePath))
             return;
         _currentSaveFile = filePath;
         using FileStream fs = File.OpenRead(filePath);
@@ -146,7 +139,7 @@ public abstract partial class MainViewModelBase : ObservableObject
     private void Save()
     {
         if(string.IsNullOrEmpty(CurrentSaveFile))
-            if(_dialogService.SaveFileDialog(out var filePath))
+            if(dialogService.SaveFileDialog(out var filePath))
                 CurrentSaveFile = filePath;
             else
                 return;
@@ -157,7 +150,7 @@ public abstract partial class MainViewModelBase : ObservableObject
     [RelayCommand]
     private void SaveAs()
     {
-        if(_dialogService.SaveFileDialog(out var filePath))
+        if(dialogService.SaveFileDialog(out var filePath))
             CurrentSaveFile = filePath;
         else
             return;
@@ -168,7 +161,7 @@ public abstract partial class MainViewModelBase : ObservableObject
     [RelayCommand]
     private void Exit()
     {
-        if(!AnyChanges || _dialogService.ShowAgreementForm("Обнаружены не сохранённые изменения. Всё равно закрыть?", "Внимание"))
+        if(!AnyChanges || dialogService.ShowAgreementForm("Обнаружены не сохранённые изменения. Всё равно закрыть?", "Внимание"))
             ShutDown();
     }
 
@@ -195,8 +188,8 @@ public abstract partial class MainViewModelBase : ObservableObject
             From = From,
             To = To,
             Step = Step,
-            History = History.ToList(),
-            Variables = Variables.ToList(),
+            History = [.. History],
+            Variables = [.. Variables],
         };
 
         if(File.Exists(CurrentSaveFile))

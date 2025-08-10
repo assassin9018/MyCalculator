@@ -30,8 +30,8 @@ public class CalcBenchmarks
         "abs(abs(-50*2)*sin(45)*100*cos(30)*100+tan(70))*100+sin(exp(7))*100+log(32)*100+sqrt(2*(log(100)))*100")]
     public string N;
 
-    private static readonly LegacyCalculator _legacy = new LegacyCalculator(5);
-    private static readonly SmartCalculator _smart = new SmartCalculator(Array.Empty<string>());
+    private static readonly LegacyCalculator _legacy = new(5);
+    private static readonly SmartCalculator _smart = new([]);
 
     [GlobalSetup]
     public void Setup()

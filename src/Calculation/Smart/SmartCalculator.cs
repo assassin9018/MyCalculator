@@ -73,7 +73,7 @@ public class SmartCalculator : ICalculator
 
     private IExpressionNode BuildTree(ReadOnlySpan<char> expressionStr)
     {
-        List<(OperationType, IExpressionNode)> nodeWithOperations = new();
+        List<(OperationType, IExpressionNode)> nodeWithOperations = [];
         int i = 0;
         OperationType curOp = OperationType.None;
         while(i < expressionStr.Length)
@@ -127,7 +127,7 @@ public class SmartCalculator : ICalculator
         return node;
     }
 
-    private static IExpressionNode GetValueNode(ReadOnlySpan<char> expressionStr, out int handledCharsCount)
+    private static ValueNode GetValueNode(ReadOnlySpan<char> expressionStr, out int handledCharsCount)
     {
         int length = 0;
         while(length < expressionStr.Length && (char.IsDigit(expressionStr[length]) || expressionStr[length] == '.'))
@@ -176,7 +176,7 @@ public class SmartCalculator : ICalculator
         throw new NotImplementedException();
     }
 
-    private IExpressionNode HandleMinusSymbols(ReadOnlySpan<char> expressionStr, out int handledCharsCount)
+    private ArithmeticOperationNode HandleMinusSymbols(ReadOnlySpan<char> expressionStr, out int handledCharsCount)
     {
         int localCount = 0;
         int modifier = 1;

@@ -9,8 +9,7 @@ public static class MauiProgram
 {
     public static MauiApp CreateMauiApp()
     {
-        var builder = MauiApp.CreateBuilder();
-        builder
+        var builder = MauiApp.CreateBuilder()
             .UseMauiApp<App>()
             .UseMauiCommunityToolkit()
             .ConfigureFonts(fonts =>
@@ -18,6 +17,9 @@ public static class MauiProgram
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
             });
+#if DEBUG
+		builder.Logging.AddDebug();
+#endif
 
         var services = builder.Services;
         services.AddSmartCalc();
@@ -25,9 +27,6 @@ public static class MauiProgram
         services.AddSingleton<MainPage>();
         services.AddSingleton<MainViewModel>();
 
-#if DEBUG
-		builder.Logging.AddDebug();
-#endif
 
 #if WINDOWS
 #elif ANDROID

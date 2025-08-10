@@ -1,19 +1,14 @@
 ﻿namespace Calculation.Legacy;
 
-public class LegacyCalculator : ICalculator
+public class LegacyCalculator(int roundDigit) : ICalculator
 {
-    private readonly int _roundDigit;
-
-    public LegacyCalculator(int roundDigit)
-    {
-        _roundDigit = roundDigit;
-    }
+    private readonly int _roundDigit = roundDigit;
 
     private string Compute(string calcStr, int opNumber)
     {
         char operation = calcStr[opNumber];
-        double a = Convert.ToDouble(calcStr.Substring(0, opNumber));
-        double b = Convert.ToDouble(calcStr.Substring(opNumber + 1, calcStr.Length - opNumber - 1));
+        double a = Convert.ToDouble(calcStr[..opNumber]);
+        double b = Convert.ToDouble(calcStr[(opNumber + 1)..]);
         switch(operation)
         {
             case '^': a = Math.Round(Math.Pow(a, b), _roundDigit); break;
@@ -46,7 +41,7 @@ public class LegacyCalculator : ICalculator
                     else if(str[lastFuncBracket] == ')') brackets--;
                     if(brackets != 0) lastFuncBracket++;
                 }
-                string mathOperation = str.Substring(startWord, firstFuncBracket - startWord);
+                string mathOperation = str[startWord..firstFuncBracket];
                 string strBetweenBrackets = str.Substring(firstFuncBracket + 1, lastFuncBracket - firstFuncBracket - 1);
                 str = str.Remove(startWord, lastFuncBracket - startWord + 1);
                 if(mathOperation != "pow")// заменить на (если > 1 аргумента, то вычислить n параметров функции, и затем вызвать нужную)

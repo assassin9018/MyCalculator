@@ -33,8 +33,8 @@ public class SmartCalculator : ICalculator
 
             IExpressionNode head = BuildTree(cleanedExpression.AsSpan());
 
-            return accuracy is null 
-                ? head 
+            return accuracy is null
+                ? head
                 : new TwoArgFunctionNode(head, new ValueNode(accuracy.Value), TwoArgFunctionType.rndx);
         }
         catch

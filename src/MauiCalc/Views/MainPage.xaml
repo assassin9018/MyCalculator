@@ -3,8 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:models="CalcAppShared.Models"
-             xmlns:vms="MauiCalc.ViewModels"
-             x:Class="MauiCalc.MainPage">
+             xmlns:vms="clr-namespace:MauiCalc.ViewModels"
+             x:Class="MauiCalc.MainPage"
+             x:Name="Page"
+             x:DataType="vms:MainViewModel">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -33,8 +35,7 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <StackLayout Orientation="Vertical" Margin="10,10,10,0" Grid.Row="0">
-                    <!--SelectedItem="{Binding Text, Source={x:Reference tbExpresion}, Mode=TwoWay}"-->
-                    <Picker ItemsSource="{Binding History}" HorizontalOptions="StartAndExpand" MinimumWidthRequest="200" Margin="5"/>
+                    <Picker ItemsSource="{Binding History}" SelectedItem="{Binding CalcExpression, Mode=OneWayToSource}" HorizontalOptions="Start" MinimumWidthRequest="200" Margin="5"/>
                     <Grid Margin="5">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="4*"/>
@@ -57,7 +58,13 @@
                             <CheckBox x:Name="BuildPlot" IsChecked="{Binding PlotMode}" Margin="10,0,-10,0" VerticalOptions="Center"/>
                             <Label Text="Режим построения графиков" VerticalOptions="Center"/>
                         </HorizontalStackLayout>
-                        <Picker Grid.Column="3" x:Name="Accuracy" ItemsSource="{Binding AvailableAccuracy}" SelectedItem="{Binding RoundAccuracy, Mode=TwoWay}" HorizontalOptions="End"/>
+                        <Picker Grid.Column="3" x:Name="Accuracy" ItemsSource="{Binding AvailableAccuracy}" SelectedItem="{Binding RoundAccuracy, Mode=TwoWay}" HorizontalOptions="End">
+                            <Picker.Behaviors>
+                                <toolkit:EventToCommandBehavior 
+                                    EventName="SelectedIndexChanged"
+                                    Command="{Binding Source={x:Reference Page}, Path=BindingContext.ExecuteCommand, x:DataType=ContentPage}"/>
+                            </Picker.Behaviors>
+                        </Picker>
                     </Grid>
                 </StackLayout>
 
@@ -78,38 +85,38 @@
                     </Grid>
                     <Grid Grid.Row="1" Margin="10">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="100"/>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="300"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="500"/>
                         </Grid.ColumnDefinitions>
-                        <Grid Grid.Column="0" HorizontalOptions="FillAndExpand">
+                        <Grid Grid.Column="0" HorizontalOptions="Fill">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="70"/>
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
-                            <Grid Grid.Row="0" HorizontalOptions="FillAndExpand" Margin="0,0,0,5" IsVisible="{Binding IsChecked, Converter={StaticResource BooleanToVisibilityConverter}, Source=BuildPlot}">
+                            <Grid Grid.Row="0" HorizontalOptions="Fill" Margin="0,0,0,5" IsVisible="{Binding IsChecked, Converter={StaticResource BooleanToVisibilityConverter}, Source=BuildPlot}">
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="15"/>
                                     <RowDefinition Height="20"/>
+                                    <RowDefinition Height="45"/>
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition/>
                                     <ColumnDefinition/>
                                     <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
-                                <Label Text="От" Grid.Column="0" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" Margin="10,0,0,0"/>
-                                <Entry Margin="2,0,2,0" Grid.Row="1" Grid.Column="0" Text="{Binding From, Mode=TwoWay}"/>
+                                <Label Text="От" Grid.Column="0" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" Margin="10,0,0,5"/>
+                                <Entry Margin="3,0,3,0" Grid.Row="1" Grid.Column="0" Text="{Binding From, Mode=TwoWay}"/>
 
-                                <Label Text="До" Grid.Column="1" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" Margin="10,0,0,0"/>
-                                <Entry Margin="2,0,2,0" Grid.Row="1" Grid.Column="1" Text="{Binding To, Mode=TwoWay}"/>
+                                <Label Text="До" Grid.Column="1" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" Margin="10,0,0,5"/>
+                                <Entry Margin="3,0,3,0" Grid.Row="1" Grid.Column="1" Text="{Binding To, Mode=TwoWay}"/>
 
-                                <Label Text="Шаг" Grid.Column="2" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" Margin="10,0,0,0"/>
-                                <Entry Margin="2,0,2,0" Grid.Row="1" Grid.Column="2" Text="{Binding Step, Mode=TwoWay}"/>
+                                <Label Text="Шаг" Grid.Column="2" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" Margin="10,0,0,5"/>
+                                <Entry Margin="3,0,3,0" Grid.Row="1" Grid.Column="2" Text="{Binding Step, Mode=TwoWay}"/>
                             </Grid>
                             <ListView HorizontalScrollBarVisibility="Never"
                           SelectedItem="{Binding SelectedVariable, Mode=TwoWay}"
                           ItemTemplate="{StaticResource VariableTemplate}"
-                          HorizontalOptions="FillAndExpand"  
+                          HorizontalOptions="Fill"  
                           ItemsSource="{Binding Variables}"
                           Grid.Row="1"/>
                         </Grid>

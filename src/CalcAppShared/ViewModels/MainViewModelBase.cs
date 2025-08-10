@@ -1,12 +1,12 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using CalcAppShared.Models;
+﻿using CalcAppShared.Models;
 using CalcAppShared.Services;
-using System.Collections.ObjectModel;
-using System.Text.Json;
-using System.Drawing;
-using Calculation.Smart.Nodes;
 using Calculation.Smart;
+using Calculation.Smart.Nodes;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using System.Collections.ObjectModel;
+using System.Drawing;
+using System.Text.Json;
 
 namespace CalcAppShared.ViewModels;
 
@@ -67,6 +67,9 @@ public abstract partial class MainViewModelBase(IDialogService dialogService) : 
     [RelayCommand]
     private void Execute()
     {
+        if(string.IsNullOrEmpty(CalcExpression))
+            return;
+
         double result = 0;
 
         SmartCalculator calc = new(Variables.Select(x => x.Name));
